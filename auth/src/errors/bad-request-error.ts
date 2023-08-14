@@ -9,7 +9,7 @@ export class BadRequestError extends BaseError {
     ];
   }
   reason = "Bad request error";
-  statusCode = 500;
+  statusCode = 400;
   constructor(message: string) {
     super(message);
     Object.setPrototypeOf(this, BadRequestError.prototype);
