@@ -76,6 +76,5 @@ it("return cookie", async () => {
     .post("/api/users/signup")
     .send({ email: "test1@test.com", password: "12345678" })
     .expect(201);
-  console.log(response.get("Set-Cookie"));
   expect(response.get("Set-Cookie")).toBeDefined();
 });
