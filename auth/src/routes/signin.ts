@@ -27,7 +27,7 @@ router.post(
       throw new BadRequestError("Login request failed");
     }
 
-    var userToken = jwt.sign(
+    const userToken = jwt.sign(
       { id: existingUser.id, email: existingUser.email },
       process.env.JWT_KEY!
     );
