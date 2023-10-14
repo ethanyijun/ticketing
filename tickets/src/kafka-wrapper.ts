@@ -16,6 +16,7 @@ class KafkaWrapper {
       clientId,
       brokers,
     });
+    console.log("Connected to Kafka");
   }
 }
 
