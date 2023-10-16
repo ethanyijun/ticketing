@@ -1,4 +1,7 @@
 import {
+  BadRequestError,
+  NotFoundError,
+  OrderStatus,
   // BadRequestError,
   requireAuth,
   validateRequest,
@@ -6,6 +9,8 @@ import {
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import mongoose from "mongoose";
+import { Ticket } from "../models/ticket";
+import { Order } from "../models/order";
 
 const router = express.Router();
 
@@ -21,16 +26,25 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    // const { title, price } = req.body;
-    // const ticket = Ticket.build({ title, price, userId: req.currentUser!.id });
-    // await ticket.save();
-    // await new TicketCreatedPublisher(kafkaWrapper.kafka).publish({
-    //   id: ticket.id,
-    //   title: ticket.title,
-    //   price: ticket.price,
-    //   userId: ticket.userId,
-    // });
-    // res.status(201).send(ticket);
+    const { ticketId } = req.body;
+    const findTicket = await Ticket.findById(ticketId);
+    if (!findTicket) throw new NotFoundError();
+    if (findTicket.isReserved)
+      throw new BadRequestError("Ticket is already reserved");
+
+    let now = new Date();
+    now.setMinutes(now.getMinutes() + 15); // timestamp
+    const expiration = new Date(now);
+    const order = Order.build({
+      userId: req.currentUser!.id,
+      status: OrderStatus.Created,
+      expiresAt: expiration,
+      ticket: ticketId,
+    });
+    await order.save();
+    findTicket.isReserved = true;
+    await findTicket.save();
+    res.status(201).send(order);
   }
 );
 export { router as createOrdersRouter };

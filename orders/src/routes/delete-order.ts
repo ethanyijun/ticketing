@@ -1,12 +1,11 @@
 import {
-  // BadRequestError,
-  // NotAuthorizedError,
-  // NotFoundError,
+  NotFoundError,
+  OrderStatus,
   requireAuth,
   validateRequest,
 } from "@ethtickets/common";
 import express, { Request, Response } from "express";
-import { body } from "express-validator";
+import { Order } from "../models/order";
 
 const router = express.Router();
 
@@ -15,24 +14,17 @@ router.delete(
   requireAuth,
   validateRequest,
   async (req: Request, res: Response) => {
-    // const { title, price } = req.body;
-    // const ticketId = req.params.id;
-    // const findTicket = await Ticket.findById(ticketId);
-    // if (!findTicket) throw new NotFoundError();
-    // if (req.currentUser!.id !== findTicket.userId)
-    //   throw new NotAuthorizedError();
-    // findTicket.set({
-    //   title,
-    //   price,
-    // });
-    // await findTicket.save();
-    // await new TicketUpdatedPublisher(kafkaWrapper.kafka).publish({
-    //   id: findTicket.id,
-    //   title: findTicket.title,
-    //   price: findTicket.price,
-    //   userId: findTicket.userId,
-    // });
-    // res.status(200).send(findTicket);
+    const order = await Order.findOne({
+      _id: req.params.id,
+      userId: req.currentUser!.id,
+    });
+
+    if (!order) throw new NotFoundError();
+    order.status = OrderStatus.Cancelled;
+    await order.save();
+
+    // publish an event saying this was cancelled
+    res.status(204).send(order);
   }
 );
 export { router as deleteOrderRouter };
