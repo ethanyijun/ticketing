@@ -11,6 +11,8 @@ import { body } from "express-validator";
 import mongoose from "mongoose";
 import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";
+import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
+import { kafkaWrapper } from "../kafka-wrapper";
 
 const router = express.Router();
 
@@ -44,6 +46,16 @@ router.post(
     await order.save();
     findTicket.isReserved = true;
     await findTicket.save();
+    await new OrderCreatedPublisher(kafkaWrapper.kafka).publish({
+      id: order.id,
+      userId: order.userId,
+      ticket: {
+        id: ticketId as string,
+        price: findTicket.price,
+      },
+      expiresAt: order.expiresAt.toISOString(),
+      status: order.status,
+    });
     res.status(201).send(order);
   }
 );

@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
 import mongoose from "mongoose";
+import { kafkaWrapper } from "../../kafka-wrapper";
 
 it("has a route handler listening to /api/orders for post requests", async () => {
   const response = await request(app).post("/api/orders").send({});
@@ -83,4 +84,21 @@ it("successfully create new order", async () => {
   expect(existingTicket?.isReserved).toEqual(true);
 });
 
-it.todo("emits an order created event");
+it("publishes an event", async () => {
+  const cookie = global.signin();
+  const ticket = Ticket.build({
+    title: "title",
+    price: 10,
+    version: "1",
+    isReserved: false,
+  });
+  await ticket.save();
+  await request(app)
+    .post("/api/orders")
+    .set("Cookie", cookie)
+    .send({
+      ticketId: ticket.id,
+    })
+    .expect(201);
+  expect(kafkaWrapper.kafka.producer).toHaveBeenCalled();
+});
