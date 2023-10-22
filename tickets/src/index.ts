@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { app } from "./app";
-import { kafkaWrapper } from "./kafka-wrapper";
+import { kafkaConfigWrapper } from "./kafka-config-wrapper";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -16,7 +16,7 @@ const start = async () => {
     throw new Error("KAFKA_BROKERS must be defined");
   }
   try {
-    await kafkaWrapper.connect(process.env.KAFKA_CLIENT_ID, [
+    await kafkaConfigWrapper.connect(process.env.KAFKA_CLIENT_ID, [
       process.env.KAFKA_BROKERS,
     ]);
     await mongoose.connect(process.env.MONGO_URI);

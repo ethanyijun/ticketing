@@ -1,13 +1,9 @@
-import {
-  BadRequestError,
-  requireAuth,
-  validateRequest,
-} from "@ethtickets/common";
+import { requireAuth, validateRequest } from "@ethtickets/common";
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
+import { kafkaConfigWrapper } from "../kafka-config-wrapper";
 import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
-import { kafkaWrapper } from "../kafka-wrapper";
 
 const router = express.Router();
 
@@ -28,11 +24,11 @@ router.post(
 
     const ticket = Ticket.build({ title, price, userId: req.currentUser!.id });
     await ticket.save();
-    await new TicketCreatedPublisher(kafkaWrapper.kafka).publish({
-      id: ticket.id,
-      title: ticket.title,
-      price: ticket.price,
-      userId: ticket.userId,
+    await new TicketCreatedPublisher(kafkaConfigWrapper.kafka).publish({
+      id: "123",
+      title: "title",
+      price: 20,
+      userId: "123",
     });
     res.status(201).send(ticket);
   }

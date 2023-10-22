@@ -5,8 +5,8 @@ import mongoose from "mongoose";
 interface TicketAttrs {
   title: string;
   price: number;
-  version: string;
   isReserved: boolean;
+  _id: string;
 }
 
 // An interface that describes the properties
@@ -14,7 +14,6 @@ interface TicketAttrs {
 interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
-  version: string;
   isReserved: boolean;
 }
 
@@ -34,10 +33,6 @@ const ticketSchema = new mongoose.Schema(
       type: Number,
       required: true,
       min: 0,
-    },
-    version: {
-      type: String,
-      required: true,
     },
     isReserved: {
       type: Boolean,

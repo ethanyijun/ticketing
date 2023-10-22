@@ -17,9 +17,9 @@ spec:
           image: ethangai/tickets
           env:
             - name: KAFKA_CLIENT_ID
-              value: kafka_client
+              value: kafka-client
             - name: KAFKA_BROKERS
-              value: localhost:9092
+              value: my-cluster-kafka-bootstrap:9092
             - name: MONGO_URI
               value: "mongodb://tickets-mongo-srv:27017/tickets"
             - name: JWT_KEY

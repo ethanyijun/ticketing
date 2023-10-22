@@ -17,9 +17,9 @@ spec:
           image: ethangai/orders
           env:
             - name: KAFKA_CLIENT_ID
-              value: kafka_client
+              value: kafka-client
             - name: KAFKA_BROKERS
-              value: localhost:9092
+              value: my-cluster-kafka-bootstrap:9092
             - name: MONGO_URI
               value: "mongodb://orders-mongo-srv:27017/orders"
             - name: JWT_KEY
