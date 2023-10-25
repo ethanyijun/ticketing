@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 declare global {
   var signin: () => string[];
 }
-jest.mock("../kafka-wrapper");
+jest.mock("../kafka-config-wrapper");
 
 let mongo: MongoMemoryServer | undefined;
 beforeAll(async () => {

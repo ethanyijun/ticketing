@@ -6,7 +6,7 @@ interface TicketAttrs {
   title: string;
   price: number;
   isReserved: boolean;
-  _id: string;
+  id: string;
 }
 
 // An interface that describes the properties
@@ -52,7 +52,11 @@ const ticketSchema = new mongoose.Schema(
 );
 
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
-  return new Ticket(attrs);
+  return new Ticket({
+    _id: attrs.id,
+    title: attrs.title,
+    price: attrs.price,
+  });
 };
 
 const Ticket = mongoose.model<TicketDoc, TicketModel>("Ticket", ticketSchema);

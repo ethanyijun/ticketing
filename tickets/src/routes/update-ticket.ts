@@ -9,7 +9,7 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
 import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
-import { kafkaWrapper } from "../kafka-wrapper";
+import { kafkaConfigWrapper } from "../kafka-config-wrapper";
 
 const router = express.Router();
 
@@ -33,7 +33,7 @@ router.put(
       price,
     });
     await findTicket.save();
-    await new TicketUpdatedPublisher(kafkaWrapper.kafka).publish({
+    await new TicketUpdatedPublisher(kafkaConfigWrapper.kafka).publish({
       id: findTicket.id,
       title: findTicket.title,
       price: findTicket.price,

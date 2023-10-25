@@ -12,7 +12,7 @@ import mongoose from "mongoose";
 import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";
 import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
-import { kafkaWrapper } from "../kafka-wrapper";
+import { kafkaConfigWrapper } from "../kafka-config-wrapper";
 
 const router = express.Router();
 
@@ -46,7 +46,7 @@ router.post(
     await order.save();
     findTicket.isReserved = true;
     await findTicket.save();
-    await new OrderCreatedPublisher(kafkaWrapper.kafka).publish({
+    await new OrderCreatedPublisher(kafkaConfigWrapper.kafka).publish({
       id: order.id,
       userId: order.userId,
       ticket: {

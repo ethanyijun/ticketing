@@ -16,7 +16,7 @@ const start = async () => {
     throw new Error("KAFKA_BROKERS must be defined");
   }
   try {
-    await kafkaConfigWrapper.connect(process.env.KAFKA_CLIENT_ID, [
+    kafkaConfigWrapper.connect(process.env.KAFKA_CLIENT_ID, [
       process.env.KAFKA_BROKERS,
     ]);
     await mongoose.connect(process.env.MONGO_URI);

@@ -2,7 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
 import mongoose from "mongoose";
-import { kafkaWrapper } from "../../kafka-wrapper";
+import { kafkaWrapper } from "../../kafka-config-wrapper";
 
 it("has a route handler listening to /api/tickets for update requests", async () => {
   const id = new mongoose.Types.ObjectId().toHexString();

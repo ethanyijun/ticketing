@@ -25,10 +25,10 @@ router.post(
     const ticket = Ticket.build({ title, price, userId: req.currentUser!.id });
     await ticket.save();
     await new TicketCreatedPublisher(kafkaConfigWrapper.kafka).publish({
-      id: "123",
-      title: "title",
-      price: 20,
-      userId: "123",
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
     });
     res.status(201).send(ticket);
   }

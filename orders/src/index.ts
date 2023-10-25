@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { app } from "./app";
-import { kafkaWrapper } from "./kafka-wrapper";
+import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
+import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
+import { kafkaConfigWrapper } from "./kafka-config-wrapper";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -16,9 +18,11 @@ const start = async () => {
     throw new Error("KAFKA_BROKERS must be defined");
   }
   try {
-    await kafkaWrapper.connect(process.env.KAFKA_CLIENT_ID, [
+    kafkaConfigWrapper.connect(process.env.KAFKA_CLIENT_ID, [
       process.env.KAFKA_BROKERS,
     ]);
+    await new TicketCreatedListener(kafkaConfigWrapper.kafka).listen();
+    await new TicketUpdatedListener(kafkaConfigWrapper.kafka).listen();
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to mongodb");
   } catch (error) {

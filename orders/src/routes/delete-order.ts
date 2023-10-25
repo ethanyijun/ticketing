@@ -7,7 +7,7 @@ import {
 import express, { Request, Response } from "express";
 import { Order } from "../models/order";
 import { OrderCancelledPublisher } from "../events/publishers/order-cancelled-publisher";
-import { kafkaWrapper } from "../kafka-wrapper";
+import { kafkaConfigWrapper } from "../kafka-config-wrapper";
 
 const router = express.Router();
 
@@ -24,8 +24,7 @@ router.delete(
     if (!order) throw new NotFoundError();
     order.status = OrderStatus.Cancelled;
     await order.save();
-
-    await new OrderCancelledPublisher(kafkaWrapper.kafka).publish({
+    await new OrderCancelledPublisher(kafkaConfigWrapper.kafka).publish({
       orderId: order.id,
       ticket: {
         id: order.ticket.toString(),

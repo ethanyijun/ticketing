@@ -2,7 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
 import mongoose from "mongoose";
-import { kafkaWrapper } from "../../kafka-wrapper";
+import { kafkaConfigWrapper } from "../../kafka-config-wrapper";
 
 it("has a route handler listening to /api/orders for post requests", async () => {
   const response = await request(app).post("/api/orders").send({});
@@ -48,10 +48,11 @@ it("error when ticket not exists", async () => {
 
 it("error when ticket reserved", async () => {
   const cookie = global.signin();
+  const ticketId = new mongoose.Types.ObjectId();
   const ticket = Ticket.build({
+    id: ticketId.toString(),
     title: "title",
     price: 10,
-    version: "1",
     isReserved: true,
   });
   await ticket.save();
@@ -65,11 +66,12 @@ it("error when ticket reserved", async () => {
 });
 
 it("successfully create new order", async () => {
+  const ticketId = new mongoose.Types.ObjectId();
   const cookie = global.signin();
   const ticket = Ticket.build({
     title: "title",
     price: 10,
-    version: "1",
+    id: ticketId.toString(),
     isReserved: false,
   });
   await ticket.save();
@@ -85,11 +87,12 @@ it("successfully create new order", async () => {
 });
 
 it("publishes an event", async () => {
+  const ticketId = new mongoose.Types.ObjectId();
   const cookie = global.signin();
   const ticket = Ticket.build({
     title: "title",
     price: 10,
-    version: "1",
+    id: ticketId.toString(),
     isReserved: false,
   });
   await ticket.save();
@@ -100,5 +103,5 @@ it("publishes an event", async () => {
       ticketId: ticket.id,
     })
     .expect(201);
-  expect(kafkaWrapper.kafka.producer).toHaveBeenCalled();
+  expect(kafkaConfigWrapper.kafka.producer).toHaveBeenCalled();
 });

@@ -17,7 +17,7 @@ spec:
           image: ethangai/orders
           env:
             - name: KAFKA_CLIENT_ID
-              value: kafka-client
+              value: kafka-orders-client
             - name: KAFKA_BROKERS
               value: my-cluster-kafka-bootstrap:9092
             - name: MONGO_URI
