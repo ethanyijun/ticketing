@@ -2,7 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
 import mongoose from "mongoose";
-import { kafkaWrapper } from "../../kafka-config-wrapper";
+import { kafkaConfigWrapper } from "../../kafka-config-wrapper";
 
 it("has a route handler listening to /api/tickets for update requests", async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
@@ -118,5 +118,5 @@ it("publish an event", async () => {
       title: "test1",
       price: 1,
     });
-  expect(kafkaWrapper.kafka.producer).toHaveBeenCalled();
+  expect(kafkaConfigWrapper.kafka.produce).toHaveBeenCalled();
 });

@@ -6,6 +6,7 @@ import { OrderStatus } from "@ethtickets/common";
 import { Order } from "../../models/order";
 import { kafkaConfigWrapper } from "../../kafka-config-wrapper";
 const ticketId = new mongoose.Types.ObjectId();
+const ticketId2 = new mongoose.Types.ObjectId();
 
 it("has a route handler listening to /api/orders/:id for delete requests", async () => {
   const ticketId = new mongoose.Types.ObjectId();
@@ -42,7 +43,7 @@ it("successfully delete order by id if the order belongs to the user", async () 
     title: "title2",
     price: 10,
     isReserved: false,
-    id: ticketId.toString(),
+    id: ticketId2.toString(),
   });
   await ticket.save();
   await ticket2.save();
@@ -84,7 +85,7 @@ it("cannot delete order if created by another user", async () => {
     title: "title2",
     price: 10,
     isReserved: false,
-    id: ticketId.toString(),
+    id: ticketId2.toString(),
   });
   await ticket.save();
   await ticket2.save();
@@ -126,5 +127,5 @@ it("publishes a cancel event", async () => {
     })
     .expect(201);
   await request(app).delete(`/api/orders/${order.id}`).set("Cookie", cookie);
-  expect(kafkaConfigWrapper.kafka.producer).toHaveBeenCalledTimes(2);
+  expect(kafkaConfigWrapper.kafka.produce).toHaveBeenCalledTimes(2);
 });

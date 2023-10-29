@@ -1,7 +1,7 @@
 import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
-import { kafkaWrapper } from "../../kafka-config-wrapper";
+import { kafkaConfigWrapper } from "../../kafka-config-wrapper";
 
 it("has a route handler listening to /api/tickets for post requests", async () => {
   const response = await request(app).post("/api/tickets").send({});
@@ -93,5 +93,5 @@ it("publishes an event", async () => {
       price: 99.95,
     })
     .expect(201);
-  expect(kafkaWrapper.kafka.producer).toHaveBeenCalled();
+  expect(kafkaConfigWrapper.kafka.produce).toHaveBeenCalled();
 });

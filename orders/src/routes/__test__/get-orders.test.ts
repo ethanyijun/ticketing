@@ -3,6 +3,7 @@ import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
 import mongoose from "mongoose";
 const ticketId = new mongoose.Types.ObjectId();
+const ticketId2 = new mongoose.Types.ObjectId();
 
 it("has a route handler listening to /api/orders for get requests", async () => {
   const response = await request(app).get("/api/orders");
@@ -35,7 +36,7 @@ it("only return signed in user orders", async () => {
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
-    id: ticketId.toString(),
+    id: ticketId2.toString(),
     isReserved: false,
   });
   await ticket.save();

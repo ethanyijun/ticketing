@@ -3,6 +3,7 @@ import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
 import mongoose from "mongoose";
 const ticketId = new mongoose.Types.ObjectId();
+const ticketId2 = new mongoose.Types.ObjectId();
 
 it("has a route handler listening to /api/orders/:id for get requests", async () => {
   const ticketId = new mongoose.Types.ObjectId();
@@ -38,7 +39,7 @@ it("return signed in user order by id", async () => {
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
-    id: ticketId.toString(),
+    id: ticketId2.toString(),
     isReserved: false,
   });
   await ticket.save();
@@ -78,7 +79,7 @@ it("cannot return order created by another user", async () => {
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
-    id: ticketId.toString(),
+    id: ticketId2.toString(),
     isReserved: false,
   });
   await ticket.save();

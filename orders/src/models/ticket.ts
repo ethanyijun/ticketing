@@ -56,6 +56,7 @@ ticketSchema.statics.build = (attrs: TicketAttrs) => {
     _id: attrs.id,
     title: attrs.title,
     price: attrs.price,
+    isReserved: attrs.isReserved,
   });
 };
 

@@ -103,5 +103,5 @@ it("publishes an event", async () => {
       ticketId: ticket.id,
     })
     .expect(201);
-  expect(kafkaConfigWrapper.kafka.producer).toHaveBeenCalled();
+  expect(kafkaConfigWrapper.kafka.produce).toHaveBeenCalled();
 });
