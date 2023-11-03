@@ -49,6 +49,7 @@ router.post(
     await new OrderCreatedPublisher(kafkaConfigWrapper.kafka).publish({
       id: order.id,
       userId: order.userId,
+      version: order.version,
       ticket: {
         id: ticketId as string,
         price: findTicket.price,

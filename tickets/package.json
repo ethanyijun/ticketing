@@ -18,11 +18,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ethtickets/common": "^1.0.60",
+    "@ethtickets/common": "^1.0.62",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-session": "^2.0.44",
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.2",
+    "axios": "^1.6.0",
     "bcrypt": "^5.1.0",
     "cookie-session": "^2.0.0",
     "express": "^4.18.2",
@@ -31,6 +32,7 @@
     "jsonwebtoken": "^9.0.1",
     "kafkajs": "^2.2.4",
     "mongoose": "^7.4.1",
+    "mongoose-update-if-current": "^1.4.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.0.4"
   },

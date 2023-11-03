@@ -38,6 +38,7 @@ router.put(
       title: findTicket.title,
       price: findTicket.price,
       userId: findTicket.userId,
+      version: findTicket.version,
     });
     res.status(200).send(findTicket);
   }
