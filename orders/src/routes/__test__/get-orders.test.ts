@@ -41,7 +41,8 @@ it("only return signed in user orders", async () => {
   });
   await ticket.save();
   await ticket2.save();
-
+  ticket.version = 1;
+  ticket2.version = 1;
   await request(app)
     .post("/api/orders")
     .set("Cookie", cookie)

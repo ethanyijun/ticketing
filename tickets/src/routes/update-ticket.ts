@@ -26,6 +26,7 @@ router.put(
     const ticketId = req.params.id;
     const findTicket = await Ticket.findById(ticketId);
     if (!findTicket) throw new NotFoundError();
+    if (findTicket.orderId) throw new BadRequestError("Ticket is locked!");
     if (req.currentUser!.id !== findTicket.userId)
       throw new NotAuthorizedError();
     findTicket.set({

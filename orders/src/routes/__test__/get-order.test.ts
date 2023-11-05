@@ -44,7 +44,7 @@ it("return signed in user order by id", async () => {
   });
   await ticket.save();
   await ticket2.save();
-
+  ticket.version = 1;
   const { body: order } = await request(app)
     .post("/api/orders")
     .set("Cookie", cookie)
@@ -84,7 +84,7 @@ it("cannot return order created by another user", async () => {
   });
   await ticket.save();
   await ticket2.save();
-
+  ticket2.version = 1;
   const { body: order1 } = await request(app)
     .post("/api/orders")
     .set("Cookie", cookie)
