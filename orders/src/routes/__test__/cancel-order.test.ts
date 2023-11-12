@@ -67,7 +67,6 @@ it("successfully delete order by id if the order belongs to the user", async () 
   const response = await request(app)
     .delete(`/api/orders/${order.id}`)
     .set("Cookie", cookie);
-
   const existingOrder = await Order.findById(order.id);
   expect(existingOrder?.status).toEqual(OrderStatus.Cancelled);
   expect(response.status).toEqual(204);

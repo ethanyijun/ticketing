@@ -39,3 +39,12 @@ it("creates and saves a ticket", async () => {
   //   expect(ticket!.orderId).toEqual(data.id);
   //   expect(ticket!.price).toEqual(data.price);
 });
+
+it("publish a ticket updated event", async () => {
+  const { listener, data, ticket } = await setup();
+  await listener.onMessage(data);
+  expect(kafkaConfigWrapper.kafka.produce).toHaveBeenCalled();
+  expect(data.id).toEqual(
+    (kafkaConfigWrapper.kafka.produce as jest.Mock).mock.calls[0][1].orderId
+  );
+});

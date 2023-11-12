@@ -23,17 +23,13 @@ const setup = async () => {
       userId: new mongoose.Types.ObjectId().toHexString(),
     },
   };
-  console.log("ticket: ", ticket);
   return { listener, dataEvent, ticket };
 };
 
 it("finds, updates, and saves a ticket", async () => {
   const { dataEvent, ticket, listener } = await setup();
-
   await listener.onMessage(dataEvent.data);
-
   const updatedTicket = await Ticket.findById(ticket.id);
-
   expect(updatedTicket!.title).toEqual(dataEvent.data.title);
   expect(updatedTicket!.price).toEqual(dataEvent.data.price);
   expect(updatedTicket!.version).toEqual(dataEvent.data.version);

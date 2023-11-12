@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { app } from "./app";
 import { kafkaConfigWrapper } from "./kafka-config-wrapper";
 import { OrderCreatedListener } from "./events/listeners/order-created-listener";
+import { OrderCancelledListener } from "./events/listeners/order-cancel-listener";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -23,6 +24,7 @@ const start = async () => {
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to mongodb");
     await new OrderCreatedListener(kafkaConfigWrapper.kafka).listen();
+    await new OrderCancelledListener(kafkaConfigWrapper.kafka).listen();
   } catch (error) {
     console.error(error);
   }

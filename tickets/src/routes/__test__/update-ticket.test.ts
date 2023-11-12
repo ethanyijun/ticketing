@@ -120,3 +120,26 @@ it("publish an event", async () => {
     });
   expect(kafkaConfigWrapper.kafka.produce).toHaveBeenCalled();
 });
+
+it("reject if ticket is locked", async () => {
+  const cookie = global.signin();
+  const res = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title: "test",
+      price: 99.95,
+    })
+    .expect(201);
+  const ticket = await Ticket.findById(res.body.id);
+  ticket!.set({ orderId: new mongoose.Types.ObjectId().toHexString() });
+  await ticket!.save();
+  const response = await request(app)
+    .put(`/api/tickets/${res.body.id}`)
+    .set("Cookie", cookie)
+    .send({
+      title: "test1",
+      price: 1,
+    });
+  expect(response.status).toEqual(400);
+});
