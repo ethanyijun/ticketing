@@ -3,6 +3,7 @@ import { app } from "./app";
 import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
 import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
 import { kafkaConfigWrapper } from "./kafka-config-wrapper";
+import { ExpirationCompletedListener } from "./events/listeners/expiration-completed-listener";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -23,6 +24,7 @@ const start = async () => {
     ]);
     await new TicketCreatedListener(kafkaConfigWrapper.kafka).listen();
     await new TicketUpdatedListener(kafkaConfigWrapper.kafka).listen();
+    await new ExpirationCompletedListener(kafkaConfigWrapper.kafka).listen();
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to mongodb");
   } catch (error) {
