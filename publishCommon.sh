@@ -17,3 +17,9 @@ cd ..
 # Change to the "orders" directory and install the "@ethtickets/common" package
 cd orders/
 npm install @ethtickets/common
+
+cd ..
+
+# Change to the "orders" directory and install the "@ethtickets/common" package
+cd payments/
+npm install @ethtickets/common

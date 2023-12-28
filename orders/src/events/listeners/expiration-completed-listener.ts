@@ -16,10 +16,11 @@ export class ExpirationCompletedListener extends Listener<ExpirationCompleted> {
       console.log("Order not found!!!");
       return;
     }
+    if (order.status === OrderStatus.Completed) return;
     order.set({ status: OrderStatus.Cancelled });
     await order.save();
     await new OrderCancelledPublisher(this.kafkaConfig).publish({
-      orderId: order.id,
+      id: order.id,
       version: order.version,
       ticket: {
         id: order.ticket.toString(),

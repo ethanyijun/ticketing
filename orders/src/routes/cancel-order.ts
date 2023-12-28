@@ -25,7 +25,7 @@ router.delete(
     order.status = OrderStatus.Cancelled;
     await order.save();
     await new OrderCancelledPublisher(kafkaConfigWrapper.kafka).publish({
-      orderId: order.id,
+      id: order.id,
       version: order.version,
       ticket: {
         id: order.ticket.toString(),
