@@ -8,6 +8,8 @@ import { Ticket } from "../../models/ticket";
 import { TicketUpdatedPublisher } from "../publishers/ticket-updated-publisher";
 
 export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
+  service = "tickets";
+
   async onMessage(data: OrderCancelledEvent["data"]): Promise<void> {
     const {
       ticket: { id: ticketId },

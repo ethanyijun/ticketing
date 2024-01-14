@@ -1,12 +1,13 @@
-import { link } from "fs/promises";
 import Link from "next/link";
 import React from "react";
 
 const Header = ({ currentUser }: any) => {
   const links = [
-    !currentUser && { label: "Sign In", link: "/auth/signin" },
-    currentUser && { label: "Sign Out", link: "/auth/signout" },
     !currentUser && { label: "Sign Up", link: "/auth/signup" },
+    !currentUser && { label: "Sign In", link: "/auth/signin" },
+    currentUser && { label: "Sell tickets", link: "/tickets/new" },
+    currentUser && { label: "My orders", link: "/orders" },
+    currentUser && { label: "Sign Out", link: "/auth/signout" },
   ]
     .filter((item) => item)
     .map((item, key) => (

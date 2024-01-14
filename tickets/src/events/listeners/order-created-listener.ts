@@ -9,6 +9,8 @@ import { TicketUpdatedPublisher } from "../publishers/ticket-updated-publisher";
 import { kafkaConfigWrapper } from "../../kafka-config-wrapper";
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
+  service = "tickets";
+
   async onMessage(data: OrderCreatedEvent["data"]) {
     const {
       ticket: { id: ticketId },

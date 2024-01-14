@@ -10,6 +10,8 @@ import { Ticket } from "../../models/ticket";
 import { Order } from "../../models/order";
 
 export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
+  service = "orders";
+
   async onMessage(data: PaymentCreatedEvent["data"]) {
     const { orderId } = data;
     const order = await Order.findById(orderId);

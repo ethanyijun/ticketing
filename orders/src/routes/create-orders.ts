@@ -39,7 +39,7 @@ router.post(
       throw new BadRequestError("Ticket is already reserved");
 
     let now = new Date();
-    now.setMinutes(now.getMinutes() + 15); // timestamp
+    now.setMinutes(now.getMinutes() + 5); // timestamp
     const expiration = new Date(now);
     const order = Order.build({
       userId: req.currentUser!.id,

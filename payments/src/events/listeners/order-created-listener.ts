@@ -2,6 +2,7 @@ import { Listener, OrderCreatedEvent, Subjects } from "@ethtickets/common";
 import { Order } from "../../models/order";
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
+  service = "payment";
   async onMessage(data: OrderCreatedEvent["data"]) {
     const {
       id: orderId,
