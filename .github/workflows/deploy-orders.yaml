@@ -29,4 +29,4 @@ jobs:
         run: |
           aws eks --region ap-southeast-2 update-kubeconfig --name test-cluster
 
-      - run: kubectl rollout restart deployment order-depl
+      - run: kubectl rollout restart deployment orders-depl
