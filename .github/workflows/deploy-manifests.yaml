@@ -22,7 +22,6 @@ jobs:
       - name: Configure kubectl
         run: |
           aws eks --region ap-southeast-2 update-kubeconfig --name test-cluster
-          kubectl config use-context admin@test-cluster.ap-southeast-2.eksctl.io
 
       - name: Deploy to EKS
         run: kubectl apply -f infra/k8s && kubectl apply -f infra/k8s-prod
