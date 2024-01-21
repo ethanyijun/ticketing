@@ -20,7 +20,7 @@ export const OrderShow = (orderData: any) => {
   return (
     <div>
       Time left to pay: {timeLeft} seconds
-      {/* Tofix email */}
+      {/* TODO add email service */}
       <StripeCheckout
         token={async ({ id }) =>
           await requestData({ token: id, orderId: orderData.id })
