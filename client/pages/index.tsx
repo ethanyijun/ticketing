@@ -6,7 +6,7 @@ import Link from "next/link";
 export const Index = (props: any) => {
   return props.currentUser ? (
     <>
-      <h1 className="mt-12">You are signed in</h1>
+      <h1 className="mt-12">You are signed in!</h1>
       <table>
         <thead>
           <tr>

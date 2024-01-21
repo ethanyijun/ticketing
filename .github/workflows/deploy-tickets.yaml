@@ -18,8 +18,15 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       - run: cd tickets && docker build -t ethangai/tickets .
       - run: docker push ethangai/tickets
-      # - uses: digitalocean/action-doctl@v2
-      #   with:
-      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      # - run: doctl kubernetes cluster kubeconfig save ticketing
-      # - run: kubectl rollout restart deployment tickets-depl
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2
+
+      - name: Configure kubectl
+        run: |
+          aws eks --region ap-southeast-2 update-kubeconfig --name test-cluster
+
+      - run: kubectl rollout restart deployment tickets-depl
