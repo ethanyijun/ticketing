@@ -1,4 +1,5 @@
 import buildClient from "@/api/build-client";
+import { useCountdown } from "@/src/hooks/countDownHook";
 import requestHook from "@/src/hooks/requestHook";
 import router from "next/router";
 import React, { useEffect, useState } from "react";
@@ -9,30 +10,13 @@ export const OrderShow = (orderData: any) => {
     `/api/payments`,
     "post",
     (res) => {
-      console.log(res);
       router.push("/");
     }
   );
-  const [timeLeft, setTimeLeft] = useState(0);
-  useEffect(() => {
-    const newTimeLeft = Math.round(
-      (new Date(orderData.expiresAt).getTime() - new Date().getTime()) / 1000
-    );
-    setTimeLeft(newTimeLeft);
-  }, []);
+  const timeLeft = useCountdown(orderData.expiresAt, orderData.status);
 
-  useEffect(() => {
-    if (timeLeft === 0) return;
-
-    // setTimeLeft(newTimeLeft);
-    const intervalId = setInterval(() => {
-      setTimeLeft(timeLeft - 1);
-    }, 1000);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [timeLeft]);
-  if (timeLeft === 0) return <div>Order expired</div>;
+  if (orderData.status === "complete") return <div>Order has completed</div>;
+  if (timeLeft <= 0) return <div>Order expired</div>;
   return (
     <div>
       Time left to pay: {timeLeft} seconds

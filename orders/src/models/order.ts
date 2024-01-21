@@ -1,5 +1,6 @@
 import { OrderStatus } from "@ethtickets/common";
 import mongoose from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 // An interface that describes the properties
 // that are requried to create a new Order
@@ -58,6 +59,8 @@ const orderSchema = new mongoose.Schema(
   }
 );
 orderSchema.set("versionKey", "version");
+orderSchema.plugin(updateIfCurrentPlugin);
+
 // orderSchema.pre("save", function (done) {
 //   this.$where = {
 //     version: this.get("version") - 1,
