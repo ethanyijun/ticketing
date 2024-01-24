@@ -2,7 +2,7 @@ import { OrderCreatedListener } from "./events/listeners/order-created-listener"
 import { kafkaConfigWrapper } from "./kafka-config-wrapper";
 
 const start = async () => {
-  console.log("Start expiration service.....");
+  console.log("Start expiration service...");
   if (!process.env.KAFKA_CLIENT_ID) {
     throw new Error("KAFKA_CLIENT_ID must be defined");
   }
