@@ -5,7 +5,7 @@ export default ({ req }: { req: any }) => {
     // We are on the server
 
     return axios.create({
-      baseURL: "http://www.ethangai.xyz/",
+      baseURL: "http://www.ethangai.xyz",
       headers: { ...req.headers, Host: "ticketing.dev" },
     });
   } else {
