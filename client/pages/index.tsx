@@ -1,5 +1,5 @@
 import buildClient from "@/api/build-client";
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance } from "axios";
 import React from "react";
 import Link from "next/link";
 
@@ -35,27 +35,45 @@ export const Index = (props: any) => {
 };
 
 export async function getServerSideProps(context: any) {
-  const clientInstance = buildClient(context);
-  const { headers } = context.req;
-  console.log("clientInstance: ", clientInstance);
-  console.log("headers: ", headers);
+  try {
+    // Define headers or extract from context.req.headers
+    const headers = {
+      // Add your headers here
+    };
 
-  // Make a POST request to the API passing the context headers
-  const response = await axios.post(
-    "http://www.ethangai.xyz/api/users/currentuser",
-    {
-      // Add any request body data if needed
-    },
-    {
-      headers: {
-        ...headers,
-        // Add any additional headers if needed
+    // Make a POST request to the API passing the context headers
+    console.log("Making POST request to API...");
+    const response = await axios.post(
+      "http://www.ethangai.xyz/api/users/currentuser",
+      {
+        // Add any request body data if needed
       },
+      {
+        headers: {
+          ...headers,
+          // Add any additional headers if needed
+        },
+      }
+    );
+
+    console.log("Received response from API:", response.data);
+
+    return { props: { ...response.data } };
+  } catch (error: any) {
+    // Handle errors if any
+    console.error("Error fetching data:", error.message);
+
+    if (axios.isAxiosError(error)) {
+      const axiosError: AxiosError = error;
+      console.error("Axios error details:", axiosError.response?.data);
     }
-  );
+
+    return { props: { error: error.message } };
+  }
+  // const clientInstance = buildClient(context);
   // const response = await clientInstance.get("/api/users/currentuser");
-  const { data } = await clientInstance.get("/api/tickets");
-  return { props: { tickets: data, ...response.data } };
+  // const { data } = await clientInstance.get("/api/tickets");
+  // return { props: { tickets: data, ...response.data } };
 }
 
 export default Index;
