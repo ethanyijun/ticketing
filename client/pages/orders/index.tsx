@@ -6,7 +6,7 @@ const OrderList = (props: any) => {
   console.log("props: ", props);
   return (
     <div>
-      <h1>OrderList</h1>
+      <h1>Order List</h1>
       <table>
         <thead>
           <tr>
