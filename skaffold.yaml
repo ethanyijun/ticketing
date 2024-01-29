@@ -1,19 +1,12 @@
-apiVersion: skaffold/v4beta3
+apiVersion: skaffold/v4beta9
 kind: Config
-deploy:
-  kubectl:
-    manifests:
-      - ./infra/k8s/*
-      - ./infra/k8s-dev/*
 build:
-  local:
-    push: false
   artifacts:
     - image: ethangai/auth
       context: auth
       sync:
         manual:
-          - src: 'src/**/*.ts'
+          - src: src/**/*.ts
             dest: .
       docker:
         dockerfile: Dockerfile
@@ -29,7 +22,7 @@ build:
       context: tickets
       sync:
         manual:
-          - src: 'src/**/*.ts'
+          - src: src/**/*.ts
             dest: .
       docker:
         dockerfile: Dockerfile
@@ -37,7 +30,7 @@ build:
       context: orders
       sync:
         manual:
-          - src: 'src/**/*.ts'
+          - src: src/**/*.ts
             dest: .
       docker:
         dockerfile: Dockerfile
@@ -45,7 +38,7 @@ build:
       context: expiration
       sync:
         manual:
-          - src: 'src/**/*.ts'
+          - src: src/**/*.ts
             dest: .
       docker:
         dockerfile: Dockerfile
@@ -53,7 +46,15 @@ build:
       context: payments
       sync:
         manual:
-          - src: 'src/**/*.ts'
+          - src: src/**/*.ts
             dest: .
       docker:
         dockerfile: Dockerfile
+  local:
+    push: false
+manifests:
+  rawYaml:
+    - ./infra/k8s/*.yaml
+    - ./infra/k8s-dev/*.yaml
+deploy:
+  kubectl: {}
