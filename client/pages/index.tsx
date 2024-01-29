@@ -36,7 +36,22 @@ export const Index = (props: any) => {
 
 export async function getServerSideProps(context: any) {
   const clientInstance = buildClient(context);
-  const response = await clientInstance.get("/api/users/currentuser");
+  const { headers } = context.req;
+
+  // Make a POST request to the API passing the context headers
+  const response = await axios.post(
+    "http://www.ethangai.xyz/api/users/currentuser",
+    {
+      // Add any request body data if needed
+    },
+    {
+      headers: {
+        ...headers,
+        // Add any additional headers if needed
+      },
+    }
+  );
+  // const response = await clientInstance.get("/api/users/currentuser");
   const { data } = await clientInstance.get("/api/tickets");
   return { props: { tickets: data, ...response.data } };
 }
