@@ -37,6 +37,8 @@ export const Index = (props: any) => {
 export async function getServerSideProps(context: any) {
   const clientInstance = buildClient(context);
   const { headers } = context.req;
+  console.log("clientInstance: ", clientInstance);
+  console.log("headers: ", headers);
 
   // Make a POST request to the API passing the context headers
   const response = await axios.post(
