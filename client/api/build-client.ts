@@ -6,8 +6,8 @@ export default ({ req }: { req: any }) => {
     console.log("We are on the server");
     return axios.create({
       baseURL: "http://www.ethangai.xyz/",
-      //{ ...req.headers, Host: "ticketing.dev" },
-      headers: req.headers,
+      headers: { ...req.headers, Host: "www.ethangai.xyz" },
+      // headers: req.headers,
     });
   } else {
     console.log("We are on the browser");

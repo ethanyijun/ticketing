@@ -39,7 +39,7 @@ export async function getServerSideProps(context: any) {
   const { headers } = context;
 
   console.log("headerss:", headers);
-  console.log("contextt headers:", context.req.headers);
+  console.log("contextt headers:", context.req.headers.Host);
   // const { headers } = context;
   clientInstance.interceptors.request.use(
     function (config) {
