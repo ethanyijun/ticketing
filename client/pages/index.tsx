@@ -37,6 +37,7 @@ export const Index = (props: any) => {
 export async function getServerSideProps(context: any) {
   const clientInstance = buildClient(context);
   console.log("clientInstance:", clientInstance);
+
   clientInstance.interceptors.request.use(
     function (config) {
       // Log the URL before the request is sent
@@ -47,7 +48,21 @@ export async function getServerSideProps(context: any) {
       return Promise.reject(error);
     }
   );
-  const response = await clientInstance.get("/api/users/currentuser");
+  const response = await axios.post(
+    "http://www.test.xyz/api/users/currentuser",
+    {
+      // Add any request body data if needed
+    },
+    {
+      headers: {
+        ...context.req,
+        // Add any additional headers if needed
+      },
+    }
+  );
+
+  console.log("Received response from API:", response);
+  // const response = await clientInstance.get("/api/users/currentuser");
   const { data } = await clientInstance.get("/api/tickets");
   return { props: { tickets: data, ...response.data } };
 }
