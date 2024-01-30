@@ -52,15 +52,16 @@ export async function getServerSideProps(context: any) {
       return Promise.reject(error);
     }
   );
-  const response = await axios.get(
-    "http://www.ethangai.xyz/api/users/currentuser",
-    {
-      headers: headers,
-    }
-  );
+  // const response = await axios.get(
+  //   "http://www.ethangai.xyz/api/users/currentuser",
+  //   {
+  //     headers: headers,
+  //   }
+  // );
 
+  const response = await clientInstance.get("/api/users/currentuser");
   console.log("Received response from API:", response);
-  // const response = await clientInstance.get("/api/users/currentuser");
+
   // const { data } = await clientInstance.get("api/tickets");
   const { data } = await axios.get("http://www.ethangai.xyz/api/tickets", {
     headers: headers,
