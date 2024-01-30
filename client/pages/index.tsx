@@ -49,12 +49,18 @@ export async function getServerSideProps(context: any) {
     }
   );
   const response = await axios.get(
-    "http://www.ethangai.xyz/api/users/currentuser"
+    "http://www.ethangai.xyz/api/users/currentuser",
+    {
+      headers: headers,
+    }
   );
 
   console.log("Received response from API:", response);
   // const response = await clientInstance.get("/api/users/currentuser");
-  const { data } = await clientInstance.get("api/tickets");
+  // const { data } = await clientInstance.get("api/tickets");
+  const { data } = await axios.get("http://www.ethangai.xyz/api/tickets", {
+    headers: headers,
+  });
   // await clientInstance.get("/api/tickets");
   return { props: { tickets: data, ...response.data } };
 }
