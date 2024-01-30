@@ -54,7 +54,8 @@ export async function getServerSideProps(context: any) {
 
   console.log("Received response from API:", response);
   // const response = await clientInstance.get("/api/users/currentuser");
-  const { data } = await clientInstance.get("/api/tickets");
+  const { data } = await axios.get("http://www.ethangai.xyz/api/tickets");
+  // await clientInstance.get("/api/tickets");
   return { props: { tickets: data, ...response.data } };
 }
 
