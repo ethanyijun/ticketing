@@ -14,7 +14,7 @@ export default ({ req }: { req: any }) => {
 
     // We must be on the browser
     return axios.create({
-      baseURL: "http://www.ethangai.xyz",
+      baseURL: "/",
     });
   }
 };
