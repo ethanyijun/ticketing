@@ -36,9 +36,10 @@ export const Index = (props: any) => {
 
 export async function getServerSideProps(context: any) {
   const clientInstance = buildClient({ req: context.req });
-  const { headers } = context.req;
+  const { headers } = context;
 
   console.log("headerss:", headers);
+  console.log("contextt:", context);
   // const { headers } = context;
   clientInstance.interceptors.request.use(
     function (config) {
