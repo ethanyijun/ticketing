@@ -48,12 +48,12 @@ export async function getServerSideProps(context: any) {
       return Promise.reject(error);
     }
   );
-  // const response = await axios.get(
-  //   "http://www.ethangai.xyz/api/users/currentuser"
-  // );
+  const response = await axios.get(
+    "http://www.ethangai.xyz/api/users/currentuser"
+  );
 
   // console.log("Received response from API:", response);
-  const response = await clientInstance.get("/api/users/currentuser");
+  // const response = await clientInstance.get("/api/users/currentuser");
   const { data } = await clientInstance.get("/api/tickets");
   // await clientInstance.get("/api/tickets");
   return { props: { tickets: data, ...response.data } };
