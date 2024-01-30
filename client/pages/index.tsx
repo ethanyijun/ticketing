@@ -36,6 +36,7 @@ export const Index = (props: any) => {
 
 export async function getServerSideProps(context: any) {
   const clientInstance = buildClient(context);
+  console.log("clientInstance:", clientInstance);
   clientInstance.interceptors.request.use(
     function (config) {
       // Log the URL before the request is sent

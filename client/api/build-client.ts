@@ -10,9 +10,11 @@ export default ({ req }: { req: any }) => {
       headers: req.headers,
     });
   } else {
+    console.log("We are on the browser");
+
     // We must be on the browser
     return axios.create({
-      baseURL: "/",
+      baseURL: "http://www.ethangai.xyz",
     });
   }
 };
