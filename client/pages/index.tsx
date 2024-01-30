@@ -49,7 +49,7 @@ export async function getServerSideProps(context: any) {
     }
   );
   const response = await axios.post(
-    "http://www.test.xyz/api/users/currentuser",
+    "http://www.ethangai.xyz/api/users/currentuser",
     {
       // Add any request body data if needed
     },
