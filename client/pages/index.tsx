@@ -48,18 +48,7 @@ export async function getServerSideProps(context: any) {
       return Promise.reject(error);
     }
   );
-  const response = await axios.post(
-    "http://www.ethangai.xyz/api/users/currentuser",
-    {
-      // Add any request body data if needed
-    },
-    {
-      headers: {
-        ...context.req,
-        // Add any additional headers if needed
-      },
-    }
-  );
+  const response = await axios.get("https://dog.ceo/api/breeds/image/random");
 
   console.log("Received response from API:", response);
   // const response = await clientInstance.get("/api/users/currentuser");
