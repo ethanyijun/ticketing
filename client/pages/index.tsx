@@ -35,9 +35,11 @@ export const Index = (props: any) => {
 };
 
 export async function getServerSideProps(context: any) {
-  const clientInstance = buildClient(context);
-  // console.log("clientInstance:", clientInstance);
-  const { headers } = context;
+  const clientInstance = buildClient({ req: context.req });
+  const { headers } = context.req;
+
+  console.log("headerss:", headers);
+  // const { headers } = context;
   clientInstance.interceptors.request.use(
     function (config) {
       // Log the URL before the request is sent
@@ -45,6 +47,7 @@ export async function getServerSideProps(context: any) {
       return config;
     },
     function (error) {
+      console.log("error in axios: ", error);
       return Promise.reject(error);
     }
   );
