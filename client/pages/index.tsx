@@ -36,37 +36,11 @@ export const Index = (props: any) => {
 
 export async function getServerSideProps(context: any) {
   const clientInstance = buildClient(context);
-  const { headers } = context;
-
-  console.log("headerss:", headers);
-  console.log("contextt headers:", context.req.headers.Host);
-  // const { headers } = context;
-  clientInstance.interceptors.request.use(
-    function (config) {
-      // Log the URL before the request is sent
-      console.log("Request config:", config);
-      return config;
-    },
-    function (error) {
-      console.log("error in axios: ", error);
-      return Promise.reject(error);
-    }
-  );
-  // const response = await axios.get(
-  //   "http://www.ethangai.xyz/api/users/currentuser",
-  //   {
-  //     headers: headers,
-  //   }
-  // );
 
   const response = await clientInstance.get("/api/users/currentuser");
-  console.log("Received response from API:", response);
 
-  // const { data } = await clientInstance.get("api/tickets");
-  const { data } = await axios.get("http://www.ethangai.xyz/api/tickets", {
-    headers: headers,
-  });
-  // await clientInstance.get("/api/tickets");
+  const { data } = await clientInstance.get("api/tickets");
+
   return { props: { tickets: data, ...response.data } };
 }
 
