@@ -7,7 +7,7 @@ import { ExpirationCompletedListener } from "./events/listeners/expiration-compl
 import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
 
 const start = async () => {
-  console.log("Start order service.....");
+  console.log("Start order service......");
 
   if (!process.env.JWT_KEY) {
     throw new Error("JWT_KEY must be defined");
@@ -22,9 +22,10 @@ const start = async () => {
     throw new Error("KAFKA_BROKERS must be defined");
   }
   try {
-    kafkaConfigWrapper.connect(process.env.KAFKA_CLIENT_ID, [
-      process.env.KAFKA_BROKERS,
-    ]);
+    kafkaConfigWrapper.connect(
+      process.env.KAFKA_CLIENT_ID,
+      process.env.KAFKA_BROKERS.split(",")
+    );
     await new TicketCreatedListener(kafkaConfigWrapper.kafka).listen();
     await new TicketUpdatedListener(kafkaConfigWrapper.kafka).listen();
     await new PaymentCreatedListener(kafkaConfigWrapper.kafka).listen();
