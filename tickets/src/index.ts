@@ -20,9 +20,10 @@ const start = async () => {
     throw new Error("KAFKA_BROKERS must be defined");
   }
   try {
-    kafkaConfigWrapper.connect(process.env.KAFKA_CLIENT_ID, [
-      process.env.KAFKA_BROKERS,
-    ]);
+    kafkaConfigWrapper.connect(
+      process.env.KAFKA_CLIENT_ID,
+      process.env.KAFKA_BROKERS.split(",")
+    );
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to mongodb");
     await new OrderCreatedListener(kafkaConfigWrapper.kafka).listen();

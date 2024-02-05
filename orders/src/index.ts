@@ -31,6 +31,7 @@ const start = async () => {
     await new PaymentCreatedListener(kafkaConfigWrapper.kafka).listen();
     await new ExpirationCompletedListener(kafkaConfigWrapper.kafka).listen();
     await mongoose.connect(process.env.MONGO_URI);
+
     console.log("Connected to mongodb");
   } catch (error) {
     console.error(error);
