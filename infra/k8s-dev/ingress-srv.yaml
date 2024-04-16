@@ -38,6 +38,13 @@ spec:
                 name: payments-srv
                 port:
                   number: 3000
+          - path: /api/new-tickets/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: new-tickets-srv
+                port:
+                  number: 3000
           - path: /?(.*)
             pathType: Prefix
             backend:
