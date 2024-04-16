@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tickets-depl
+  name: new-tickets-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tickets
+      app: new-tickets
   template:
     metadata:
       labels:
-        app: tickets
+        app: new-tickets
     spec:
       containers:
-        - name: tickets
-          image: ethangai/tickets
+        - name: new-tickets
+          image: ethangai/new-tickets
           env:
             - name: KAFKA_CLIENT_ID
               value: kafka-tickets-client
@@ -22,21 +22,21 @@ spec:
               value: my-cluster-kafka-bootstrap:9092
             - name: MONGO_URI
               value: "mongodb://tickets-mongo-srv:27017/tickets"
-            - name: JWT_KEY
-              valueFrom: 
-                secretKeyRef: 
-                  name: jwt-secret
-                  key: JWT_KEY
+          #   - name: JWT_KEY
+          #     valueFrom: 
+          #       secretKeyRef: 
+          #         name: jwt-secret
+          #         key: JWT_KEY
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: tickets-srv
+  name: new-tickets-srv
 spec:
   selector:
-    app: tickets
+    app: new-tickets
   ports:
-    - name: tickets
+    - name: new-tickets
       protocol: TCP
       port: 3000
       targetPort: 3000
