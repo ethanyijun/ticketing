@@ -17,15 +17,21 @@ router.post(
       .not()
       .isEmpty()
       .withMessage("Price must be valid"),
+    body("availableTickets")
+      .isInt()
+      .not()
+      .isEmpty()
+      .withMessage("Available tickets number must be provided"),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { title, price } = req.body;
+    const { title, price, availableTickets } = req.body;
 
     const ticket = Ticket.build({
       title,
       price,
       userId: req.currentUser!.id,
+      availableTickets,
     });
     await ticket.save();
     await new TicketCreatedPublisher(kafkaConfigWrapper.kafka).publish({
@@ -34,6 +40,7 @@ router.post(
       price: ticket.price,
       userId: ticket.userId,
       version: ticket.version,
+      availableTickets: ticket.availableTickets,
     });
     res.status(201).send(ticket);
   }

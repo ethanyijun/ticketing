@@ -9,7 +9,6 @@ import Head from "next/head";
 import PageLayout from "@/src/components/layout";
 import axios from "axios";
 import Header from "@/src/components/header";
-import buildClient from "@/api/build-client";
 
 const MyApp: AppType = ({ Component, pageProps }: AppProps) => {
   return (

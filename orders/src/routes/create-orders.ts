@@ -13,6 +13,7 @@ import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";
 import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 import { kafkaConfigWrapper } from "../kafka-config-wrapper";
+import axios from "axios";
 
 const router = express.Router();
 
@@ -28,6 +29,7 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
+    console.log("jwt:", req.session?.jwt);
     const { ticketId } = req.body;
     const findTicket = await Ticket.findOne({
       _id: ticketId,
@@ -35,8 +37,8 @@ router.post(
     if (!findTicket) {
       throw new NotFoundError();
     }
-    if (findTicket.isReserved)
-      throw new BadRequestError("Ticket is already reserved");
+    // if (findTicket.isReserved)
+    //   throw new BadRequestError("Ticket is already reserved");
 
     let now = new Date();
     now.setMinutes(now.getMinutes() + 5); // timestamp
@@ -50,6 +52,30 @@ router.post(
     await order.save();
     findTicket.isReserved = true;
     await findTicket.save();
+    // const client = axios.create({
+    //   //www.ethangai.xyz
+    //   baseURL:
+    //     "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+    //   headers: { ...req.headers, Host: "ticketing.dev" },
+    //   // baseURL: "http://ticketing.dev/",
+    //   // headers: { ...req.headers, Host: "ticketing.dev" },
+    // });
+    // const response = await client.get(`/api/tickets/${findTicket.id}`);
+
+    // pass in the header
+    // const response = await axios.put(
+    //   `http://tickets-srv:3000/api/tickets/book/${findTicket.id}`,
+    //   {},
+    //   { headers: { Authorization: `Bearer ${req.session?.jwt}` } }
+    // );
+    // console.log("tickett: ", response.data);
+    // .then((response) => {
+    //   console.log("tickett: ", response.data);
+    // })
+    // .catch((error) => {
+    //   console.error("Error:", error);
+    // });
+
     await new OrderCreatedPublisher(kafkaConfigWrapper.kafka).publish({
       id: order.id,
       userId: order.userId,

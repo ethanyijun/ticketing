@@ -19,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ethtickets/common": "^1.0.82",
+    "@ethtickets/common": "^1.0.92",
     "@types/bull": "^4.10.0",
     "bull": "^4.11.5",
     "kafkajs": "^2.2.4",

@@ -30,6 +30,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
       userId: findTicket.userId,
       version: findTicket.version,
       orderId: orderId,
+      availableTickets: findTicket.availableTickets,
     });
   }
   readonly subject = Subjects.OrderCreated;

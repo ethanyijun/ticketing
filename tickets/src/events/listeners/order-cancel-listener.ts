@@ -18,6 +18,7 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
     if (!findTicket) throw new NotFoundError();
     findTicket.set({
       orderId: undefined,
+      availableTickets: findTicket.availableTickets + 1,
     });
     await findTicket.save();
     await new TicketUpdatedPublisher(this.kafkaConfig).publish({
@@ -26,7 +27,8 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
       price: findTicket.price,
       userId: findTicket.userId,
       version: findTicket.version,
-      orderId: findTicket.orderId,
+      availableTickets: findTicket.availableTickets + 1,
+      // orderId: findTicket.orderId,
     });
   }
   readonly subject = Subjects.OrderCancelled;
