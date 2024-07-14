@@ -42,9 +42,11 @@ export const OrderShow = (orderData: any) => {
 
 export async function getServerSideProps(context: any) {
   const client = buildClient(context);
+  const currentUser = await client.get("/api/users/currentuser");
+
   const { data } = await client.get(`/api/orders/${context.query.orderId}`);
   return {
-    props: data, // will be passed to the page component as props
+    props: { ...data, ...currentUser.data }, // will be passed to the page component as props
   };
 }
 

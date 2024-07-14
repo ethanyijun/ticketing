@@ -21,6 +21,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     if (!findTicket) throw new NotFoundError();
     findTicket.set({
       orderId,
+      availableTickets: findTicket.availableTickets - 1,
     });
     await findTicket.save();
     await new TicketUpdatedPublisher(this.kafkaConfig).publish({

@@ -23,7 +23,13 @@ const OrderList = ({ orders }: any) => {
               orders.map((order: any, index: number) => (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="py-3 px-4 border-b text-gray-900">
-                    {order.ticket.title}
+                    <Link
+                      className="text-blue-600 hover:underline"
+                      href="/orders/[orderId]"
+                      as={`orders/${order.id}`}
+                    >
+                      {order.ticket.title}
+                    </Link>
                   </td>
                   <td className="py-3 px-4 border-b text-gray-900">
                     {order.status}
