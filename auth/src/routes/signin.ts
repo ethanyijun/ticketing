@@ -28,7 +28,11 @@ router.post(
     }
 
     const userToken = jwt.sign(
-      { id: existingUser.id, email: existingUser.email },
+      {
+        id: existingUser.id,
+        email: existingUser.email,
+        role: existingUser.role,
+      },
       process.env.JWT_KEY!
     );
     req.session = {

@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 declare global {
   var signin: () => string[];
+  var signinadmin: () => string[];
 }
 jest.mock("../kafka-config-wrapper");
 
@@ -37,6 +38,20 @@ global.signin = () => {
   const payload = {
     id,
     email: "test1@test",
+    role: "user",
+  };
+  const userToken = jwt.sign(payload, process.env.JWT_KEY!);
+  const sessionJSON = JSON.stringify({ jwt: userToken });
+  const base64 = Buffer.from(sessionJSON).toString("base64");
+  return [`session=${base64}`];
+};
+
+global.signinadmin = () => {
+  const id = new mongoose.Types.ObjectId().toHexString();
+  const payload = {
+    id,
+    email: "test1@test",
+    role: "admin",
   };
   const userToken = jwt.sign(payload, process.env.JWT_KEY!);
   const sessionJSON = JSON.stringify({ jwt: userToken });

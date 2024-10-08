@@ -50,8 +50,8 @@ router.post(
       ticket: ticketId,
     });
     await order.save();
-    findTicket.isReserved = true;
-    await findTicket.save();
+    // findTicket.isReserved = true;
+    // await findTicket.save();
     // const client = axios.create({
     //   //www.ethangai.xyz
     //   baseURL:

@@ -21,7 +21,7 @@ router.post(
     if (existingUser) {
       throw new BadRequestError("Email in use");
     }
-    const user = User.build({ email, password });
+    const user = User.build({ email, password, role: "user" });
     await user.save();
 
     var userToken = jwt.sign(

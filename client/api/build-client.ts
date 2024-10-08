@@ -1,13 +1,13 @@
 import axios from "axios";
 
-export default ({ req }: { req: any }) => {
+export default ({ req }: { req?: any } = {}) => {
   if (typeof window === "undefined") {
     console.log("We are on the server");
     return axios.create({
       //www.ethangai.xyz
       baseURL:
         "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
-      headers: { ...req.headers, Host: "ticketing.dev" },
+      headers: req ? { ...req.headers, Host: "ticketing.dev" } : undefined,
       // baseURL: "http://ticketing.dev/",
       // headers: { ...req.headers, Host: "ticketing.dev" },
     });
