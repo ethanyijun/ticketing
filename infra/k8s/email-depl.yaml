@@ -25,6 +25,11 @@ spec:
                 secretKeyRef: 
                   name: jwt-secret
                   key: JWT_KEY
+            - name: EMAIL_PASSWORD
+              valueFrom: 
+                secretKeyRef: 
+                  name: email-password
+                  key: EMAIL_PASSWORD                  
 ---
 apiVersion: v1
 kind: Service
