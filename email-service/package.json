@@ -1,5 +1,5 @@
 {
-  "name": "tickets",
+  "name": "email",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -19,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ethtickets/common": "^1.0.94",
+    "@ethtickets/common": "^1.0.97",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-session": "^2.0.44",
     "@types/express": "^4.17.17",
@@ -32,6 +32,7 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.1",
     "kafkajs": "^2.2.4",
+    "mongoose": "^8.9.1",
     "nodemailer": "^6.9.16",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.0.4"

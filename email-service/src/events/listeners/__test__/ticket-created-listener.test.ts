@@ -1,29 +1,54 @@
-import { Subjects, TicketCreatedEvent } from "@ethtickets/common";
-import { kafkaConfigWrapper } from "../../../kafka-config-wrapper";
+import { TicketCreatedEvent, Subjects, KafkaConfig } from "@ethtickets/common";
+import { NodeMailer } from "../../../nodemailer";
 import { TicketCreatedListener } from "../ticket-created-listener";
-import mongoose from "mongoose";
-import { Ticket } from "../../../models/ticket";
+jest.mock("../../../nodemailer", () => ({
+  NodeMailer: jest.fn().mockImplementation(() => ({
+    sendEmail: jest.fn(),
+  })),
+}));
 
-const setup = async () => {
-  const listener = new TicketCreatedListener(kafkaConfigWrapper.kafka);
-  const dataEvent: TicketCreatedEvent = {
-    subject: Subjects.TicketCreated,
-    data: {
-      id: new mongoose.Types.ObjectId().toHexString(),
-      version: 1,
-      title: "test",
-      price: 10,
-      userId: new mongoose.Types.ObjectId().toHexString(),
-    },
-  };
-  return { listener, dataEvent };
-};
+describe("TicketCreatedListener", () => {
+  let kafkaConfigMock: jest.Mocked<KafkaConfig>;
+  let listener: TicketCreatedListener;
+  const sendEmailMock = jest.fn();
 
-it("creates and saves a ticket", async () => {
-  const { listener, dataEvent } = await setup();
-  await listener.onMessage(dataEvent.data);
-  const ticket = await Ticket.findById(dataEvent.data.id);
-  expect(ticket!).toBeDefined();
-  expect(ticket!.title).toEqual(dataEvent.data.title);
-  expect(ticket!.price).toEqual(dataEvent.data.price);
+  beforeEach(() => {
+    // Mock the sendEmail method
+    (NodeMailer as jest.Mock).mockImplementation(() => ({
+      sendEmail: sendEmailMock,
+    }));
+    kafkaConfigMock = {
+      produce: jest.fn(),
+      consume: jest.fn(),
+    } as unknown as jest.Mocked<KafkaConfig>;
+    // Create a new instance of the listener
+    listener = new TicketCreatedListener(kafkaConfigMock);
+  });
+
+  it("should have the correct subject", () => {
+    expect(listener.subject).toEqual(Subjects.TicketCreated);
+  });
+
+  it("should send an email when a ticket is created", async () => {
+    const eventData: TicketCreatedEvent["data"] = {
+      id: "123",
+      title: "Test Ticket",
+      price: 100,
+      userId: "user123",
+      userEmail: "user@example.com",
+      availableTickets: 2,
+      version: 0,
+    };
+
+    // Call the onMessage method with mock data
+    await listener.onMessage(eventData);
+
+    // Assert that sendEmail was called with correct arguments
+    expect(sendEmailMock).toHaveBeenCalledTimes(1);
+    expect(sendEmailMock).toHaveBeenCalledWith(
+      "user@example.com",
+      "You have new ticket created from ticketing",
+      "Ticket: Test Ticket has been created for you."
+    );
+  });
 });

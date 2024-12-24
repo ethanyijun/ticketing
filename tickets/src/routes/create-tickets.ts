@@ -41,6 +41,7 @@ router.post(
       userId: ticket.userId,
       version: ticket.version,
       availableTickets: ticket.availableTickets,
+      userEmail: req.currentUser!.email,
     });
     res.status(201).send(ticket);
   }

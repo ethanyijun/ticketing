@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: email
+  template:
+    metadata:
+      labels:
+        app: email
+    spec:
+      containers:
+        - name: email
+          image: ethangai/email
+          env:
+            - name: KAFKA_CLIENT_ID
+              value: kafka-email-client
+            - name: KAFKA_BROKERS
+              value: my-cluster-kafka-bootstrap:9092
+            - name: JWT_KEY
+              valueFrom: 
+                secretKeyRef: 
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: email-srv
+spec:
+  selector:
+    app: email
+  ports:
+    - name: email
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

@@ -1,9 +1,5 @@
-import {
-  Listener,
-  OrderStatus,
-  PaymentCreatedEvent,
-  Subjects,
-} from "@ethtickets/common";
+import { Listener, PaymentCreatedEvent, Subjects } from "@ethtickets/common";
+import { NodeMailer } from "../../nodemailer";
 
 export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
   service = "email";
