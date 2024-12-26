@@ -30,16 +30,3 @@ spec:
                 secretKeyRef: 
                   name: email-password
                   key: EMAIL_PASSWORD                  
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: email-srv
-spec:
-  selector:
-    app: email
-  ports:
-    - name: email
-      protocol: TCP
-      port: 3000
-      targetPort: 3000
