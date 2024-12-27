@@ -30,3 +30,6 @@ cd ..
 # Change to the "orders" directory and install the "@ethtickets/common" package
 cd expiration/
 npm install @ethtickets/common
+
+cd email-service/
+npm install @ethtickets/common

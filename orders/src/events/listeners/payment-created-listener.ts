@@ -1,12 +1,9 @@
 import {
   Listener,
-  NotFoundError,
   OrderStatus,
   PaymentCreatedEvent,
   Subjects,
-  TicketCreatedEvent,
 } from "@ethtickets/common";
-import { Ticket } from "../../models/ticket";
 import { Order } from "../../models/order";
 
 export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
