@@ -2,13 +2,26 @@ import buildClient from "@/api/build-client";
 import requestHook from "@/src/hooks/requestHook";
 import router from "next/router";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../src/store/features/cartSlice";
 
 const TicketShow = (ticketData: any) => {
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    dispatch(
+      addToCart({
+        id: ticketData.id,
+        title: ticketData.title,
+        price: ticketData.price,
+      })
+    );
+  };
+
   const { requestData, formErrors } = requestHook(
     `/api/orders`,
     "post",
     (response) => {
-      console.log("response: ", response);
       router.push("/orders/[orderId]", `/orders/${response?.data.id}`);
     }
   );
@@ -18,12 +31,11 @@ const TicketShow = (ticketData: any) => {
       <p className="text-xl text-gray-700 mb-6">Price: ${ticketData.price}</p>
 
       {formErrors && <div className="text-red-500 mb-4">{formErrors}</div>}
-
       <button
-        onClick={async () => await requestData({ ticketId: ticketData.id })}
+        onClick={handleAddToCart}
         className="w-full py-2 px-4 bg-blue-500 text-white font-bold rounded-lg hover:bg-sky-500 focus:outline-none focus:shadow-outline transition duration-150"
       >
-        Purchase
+        Add to Cart
       </button>
     </div>
   );

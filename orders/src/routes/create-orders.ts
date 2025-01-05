@@ -29,7 +29,6 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    console.log("jwt:", req.session?.jwt);
     const { ticketId } = req.body;
     const findTicket = await Ticket.findOne({
       _id: ticketId,
