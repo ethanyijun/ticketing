@@ -19,6 +19,6 @@ spec:
             - name: KAFKA_CLIENT_ID
               value: kafka-expiration-client
             - name: KAFKA_BROKERS
-              value: my-cluster-kafka-bootstrap:9092
+              value: kafka-service:9092
             - name: REDIS_HOST
               value: expiration-redis-srv

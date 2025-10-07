@@ -19,7 +19,7 @@ spec:
             - name: KAFKA_CLIENT_ID
               value: kafka-payments-client
             - name: KAFKA_BROKERS
-              value: my-cluster-kafka-bootstrap:9092
+              value: kafka-service:9092
             - name: MONGO_URI
               value: "mongodb://payments-mongo-srv:27017/payments"
             - name: JWT_KEY
