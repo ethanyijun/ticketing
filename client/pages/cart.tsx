@@ -1,25 +1,34 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../src/store/store";
-import { removeFromCart } from "../src/store/features/cartSlice";
+import { clearCart, removeFromCart } from "../src/store/features/cartSlice";
 import requestHook from "@/src/hooks/requestHook";
 import router from "next/router";
+import { useState } from "react";
 
 const CartPage = () => {
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const dispatch = useDispatch();
   const { requestData, formErrors } = requestHook(
     `/api/orders`,
     "post",
     (response) => {
+      dispatch(clearCart());
       router.push("/orders/[orderId]", `/orders/${response?.data.id}`);
     }
   );
-  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Shopping Cart</h1>
-      {cartItems.length === 0 ? (
+      {isCheckingOut ? (
+        <p>Redirecting to your order...</p>
+      ) : cartItems.length === 0 ? (
         <p>Your cart is empty</p>
       ) : (
         <>
@@ -31,7 +40,8 @@ const CartPage = () => {
               >
                 <div>
                   <h3 className="font-semibold">{item.title}</h3>
-                  <p className="text-gray-600">${item.price}</p>
+                  <p className="text-gray-600">Price: ${item.price}</p>
+                  <p className="text-gray-600">Quantity: {item.quantity}</p>
                 </div>
                 <button
                   onClick={() => dispatch(removeFromCart(item.id))}
@@ -46,9 +56,13 @@ const CartPage = () => {
             <p className="text-xl font-bold">Total: ${total}</p>
             <button
               className="bg-green-500 text-white px-6 py-2 rounded mt-4 hover:bg-green-600"
-              onClick={async () =>
-                await requestData({ ticketId: cartItems[0].id })
-              }
+              onClick={async () => {
+                setIsCheckingOut(true);
+                await requestData({
+                  ticketId: cartItems[0].id,
+                  quantity: cartItems[0].quantity,
+                });
+              }}
             >
               Checkout
             </button>

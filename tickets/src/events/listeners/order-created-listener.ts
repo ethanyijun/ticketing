@@ -13,7 +13,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
 
   async onMessage(data: OrderCreatedEvent["data"]) {
     const {
-      ticket: { id: ticketId },
+      ticket: { id: ticketId, quantity },
       id: orderId,
     } = data;
 
@@ -21,7 +21,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     if (!findTicket) throw new NotFoundError();
     findTicket.set({
       orderId,
-      availableTickets: findTicket.availableTickets - 1,
+      availableTickets: findTicket.availableTickets - quantity,
     });
     await findTicket.save();
     await new TicketUpdatedPublisher(this.kafkaConfig).publish({
