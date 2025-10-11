@@ -34,7 +34,7 @@ it("error when user doesn't own the order", async () => {
       orderId: order.id,
       token: "sdfasdfa",
     })
-    .expect(401);
+    .expect(403);
 });
 
 it("returns 400 when purchasing a cancelled order", async () => {

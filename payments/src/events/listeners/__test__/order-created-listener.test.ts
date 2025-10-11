@@ -15,6 +15,7 @@ const setup = async () => {
       ticket: {
         id: new mongoose.Types.ObjectId().toHexString(),
         price: 20,
+        quantity: 2,
       },
       expiresAt: new Date().toISOString(),
       status: OrderStatus.Created,
