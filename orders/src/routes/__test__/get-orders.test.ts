@@ -31,13 +31,13 @@ it("only return signed in user orders", async () => {
     title: "title1",
     price: 10,
     id: ticketId.toString(),
-    isReserved: false,
+    availableTickets: 5,
   });
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
     id: ticketId2.toString(),
-    isReserved: false,
+    availableTickets: 5,
   });
   await ticket.save();
   await ticket2.save();

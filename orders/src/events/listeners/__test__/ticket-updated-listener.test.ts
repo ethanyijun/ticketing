@@ -10,7 +10,7 @@ const setup = async () => {
     id: new mongoose.Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
-    isReserved: false,
+    availableTickets: 10,
   });
   await ticket.save();
   const dataEvent: TicketUpdatedEvent = {
@@ -20,6 +20,7 @@ const setup = async () => {
       version: ticket.version + 1,
       title: "test",
       price: 10,
+      availableTickets: 5,
       userId: new mongoose.Types.ObjectId().toHexString(),
     },
   };
@@ -33,6 +34,9 @@ it("finds, updates, and saves a ticket", async () => {
   expect(updatedTicket!.title).toEqual(dataEvent.data.title);
   expect(updatedTicket!.price).toEqual(dataEvent.data.price);
   expect(updatedTicket!.version).toEqual(dataEvent.data.version);
+  expect(updatedTicket!.availableTickets).toEqual(
+    dataEvent.data.availableTickets
+  );
 });
 
 it("does not call ack if the event has a skipped version number", async () => {

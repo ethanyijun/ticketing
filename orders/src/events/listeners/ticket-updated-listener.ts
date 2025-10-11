@@ -5,7 +5,7 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
   service = "orders";
 
   async onMessage(data: TicketUpdatedEvent["data"]): Promise<void> {
-    const { id, title, price, version } = data;
+    const { id, title, price, version, availableTickets } = data;
 
     const ticket = await Ticket.findByEvent({ id, version: version });
 
@@ -13,7 +13,12 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
       console.log("Not found!!!");
       return;
     }
-    ticket.set({ title, price, version });
+    ticket.set({
+      title,
+      price,
+      version,
+      availableTickets,
+    });
     await ticket.save();
   }
   readonly subject = Subjects.TicketUpdated;
