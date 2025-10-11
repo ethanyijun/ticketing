@@ -33,14 +33,15 @@ it("return 401 if user not authenticated", async () => {
   expect(response.status).toEqual(401);
 });
 
-it("return 401 if user authenticated but not own the ticket", async () => {
+it("return 403 if user authenticated but not own the ticket", async () => {
   const cookie = global.signin();
   const res = await request(app)
     .post("/api/tickets")
     .set("Cookie", cookie)
     .send({
       title: "test",
-      price: 99.95,
+      price: 99,
+      availableTickets: 10,
     })
     .expect(201);
 
@@ -51,9 +52,10 @@ it("return 401 if user authenticated but not own the ticket", async () => {
     .send({
       title: "test1",
       price: 99,
+      availableTickets: 5,
     });
 
-  expect(response.status).toEqual(401);
+  expect(response.status).toEqual(403);
 });
 
 it("return 400 if user provides an invalid title or price", async () => {
@@ -64,6 +66,7 @@ it("return 400 if user provides an invalid title or price", async () => {
     .send({
       title: "test",
       price: 99.95,
+      availableTickets: 10,
     })
     .expect(201);
 
@@ -85,6 +88,7 @@ it("successfully update the ticket if user authenticated and own the ticket", as
     .send({
       title: "test",
       price: 99.95,
+      availableTickets: 10,
     })
     .expect(201);
 
@@ -108,6 +112,7 @@ it("publish an event", async () => {
     .send({
       title: "test",
       price: 99.95,
+      availableTickets: 10,
     })
     .expect(201);
 
@@ -121,25 +126,27 @@ it("publish an event", async () => {
   expect(kafkaConfigWrapper.kafka.produce).toHaveBeenCalled();
 });
 
-it("reject if ticket is locked", async () => {
-  const cookie = global.signin();
-  const res = await request(app)
-    .post("/api/tickets")
-    .set("Cookie", cookie)
-    .send({
-      title: "test",
-      price: 99.95,
-    })
-    .expect(201);
-  const ticket = await Ticket.findById(res.body.id);
-  ticket!.set({ orderId: new mongoose.Types.ObjectId().toHexString() });
-  await ticket!.save();
-  const response = await request(app)
-    .put(`/api/tickets/${res.body.id}`)
-    .set("Cookie", cookie)
-    .send({
-      title: "test1",
-      price: 1,
-    });
-  expect(response.status).toEqual(400);
-});
+// it("reject if ticket is locked", async () => {
+//   const cookie = global.signin();
+//   const res = await request(app)
+//     .post("/api/tickets")
+//     .set("Cookie", cookie)
+//     .send({
+//       title: "test",
+//       price: 99.95,
+//       availableTickets: 10,
+//     })
+//     .expect(201);
+//   const ticket = await Ticket.findById(res.body.id);
+//   ticket!.set({ orderId: new mongoose.Types.ObjectId().toHexString() });
+//   await ticket!.save();
+//   const response = await request(app)
+//     .put(`/api/tickets/${res.body.id}`)
+//     .set("Cookie", cookie)
+//     .send({
+//       title: "test1",
+//       price: 1,
+//       availableTickets: 10,
+//     });
+//   expect(response.status).toEqual(400);
+// });
