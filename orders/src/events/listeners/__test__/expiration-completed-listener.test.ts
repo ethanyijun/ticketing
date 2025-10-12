@@ -16,7 +16,7 @@ const setup = async () => {
     id: new mongoose.Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
-    isReserved: false,
+    availableTickets: 10,
   });
   await ticket.save();
   const order = Order.build({
@@ -43,5 +43,5 @@ it("updates the order status to cancelled", async () => {
   const eventData = (kafkaConfigWrapper.kafka.produce as jest.Mock).mock
     .calls[0][1];
 
-  expect(eventData.orderId).toEqual(dataEvent.orderId);
+  expect(eventData.id).toEqual(dataEvent.orderId);
 });

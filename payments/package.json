@@ -19,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ethtickets/common": "^1.0.97",
+    "@ethtickets/common": "^1.0.98",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-session": "^2.0.44",
     "@types/express": "^4.17.17",
@@ -44,7 +44,7 @@
     "@types/jest": "^29.5.3",
     "@types/supertest": "^2.0.12",
     "jest": "^29.6.2",
-    "mongodb-memory-server": "^8.14.0",
+    "mongodb-memory-server": "^10.2.3",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.1"
   }

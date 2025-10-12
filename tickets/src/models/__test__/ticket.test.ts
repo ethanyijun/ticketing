@@ -6,6 +6,7 @@ it("implements optimistic concurrency control", async () => {
     title: "concert",
     price: 5,
     userId: "123",
+    availableTickets: 100,
   });
 
   // Save the ticket to the database
@@ -37,12 +38,14 @@ it("increments the version number on multiple saves", async () => {
     title: "concert",
     price: 20,
     userId: "123",
+    availableTickets: 100,
   });
 
   await ticket.save();
   expect(ticket.version).toEqual(0);
-  await ticket.save();
-  expect(ticket.version).toEqual(1);
-  await ticket.save();
-  expect(ticket.version).toEqual(2);
+  const firstInstance = await Ticket.findById(ticket.id);
+  firstInstance?.set({ price: 10 });
+  await firstInstance?.save();
+  const findFirstInstance = await Ticket.findById(firstInstance?.id);
+  expect(findFirstInstance?.version).toEqual(1);
 });

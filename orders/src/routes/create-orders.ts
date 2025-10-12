@@ -29,7 +29,7 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { ticketId } = req.body;
+    const { ticketId, quantity } = req.body;
     const findTicket = await Ticket.findOne({
       _id: ticketId,
     });
@@ -82,6 +82,7 @@ router.post(
       ticket: {
         id: ticketId as string,
         price: findTicket.price,
+        quantity: quantity,
       },
       expiresAt: order.expiresAt.toISOString(),
       status: order.status,

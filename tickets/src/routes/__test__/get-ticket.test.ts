@@ -29,6 +29,7 @@ it("should return 200 if signed in user request valid ticket", async () => {
     .send({
       title: "test",
       price: 100,
+      availableTickets: 5,
     })
     .expect(201);
 

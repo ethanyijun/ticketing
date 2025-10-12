@@ -14,6 +14,8 @@ const setup = async () => {
       title: "test",
       price: 10,
       userId: new mongoose.Types.ObjectId().toHexString(),
+      userEmail: "test@test.com",
+      availableTickets: 100,
     },
   };
   return { listener, dataEvent };
@@ -26,4 +28,5 @@ it("creates and saves a ticket", async () => {
   expect(ticket!).toBeDefined();
   expect(ticket!.title).toEqual(dataEvent.data.title);
   expect(ticket!.price).toEqual(dataEvent.data.price);
+  expect(ticket!.availableTickets).toEqual(dataEvent.data.availableTickets);
 });

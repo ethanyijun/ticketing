@@ -9,6 +9,7 @@ const createTicket = () => {
     .send({
       title: "test",
       price: 100,
+      availableTickets: 10,
     })
     .expect(201);
 };

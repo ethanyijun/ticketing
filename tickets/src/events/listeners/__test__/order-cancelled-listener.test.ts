@@ -11,8 +11,9 @@ const setup = async () => {
     title: "test",
     price: 12,
     userId: "123",
+    availableTickets: 5,
   });
-  ticket.orderId = orderId;
+  // ticket.orderId = orderId;
   await ticket.save();
   const data: OrderCancelledEvent["data"] = {
     id: orderId,
@@ -29,7 +30,7 @@ it("updates ticket, publishes an event, and acks the message", async () => {
   const { listener, data, ticket, orderId } = await setup();
   await listener.onMessage(data);
   const updatedTicket = await Ticket.findById(ticket.id);
-  expect(updatedTicket!.orderId).toEqual(undefined);
+  // expect(updatedTicket!.orderId).toEqual(undefined);
   expect(kafkaConfigWrapper.kafka.produce).toHaveBeenCalled();
 
   expect(

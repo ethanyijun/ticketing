@@ -16,8 +16,6 @@ export class ExpirationCompletedListener extends Listener<ExpirationCompleted> {
     const order = await Order.findById(orderId);
     const ticket = await Ticket.findById(order?.ticket);
     if (ticket) {
-      ticket.isReserved = false;
-
       await ticket.save();
     }
     if (!order) {

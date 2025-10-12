@@ -36,14 +36,14 @@ it("successfully delete order by id if the order belongs to the user", async () 
   const ticket = Ticket.build({
     title: "title1",
     price: 10,
-    isReserved: false,
     id: ticketId.toHexString(),
+    availableTickets: 5,
   });
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
-    isReserved: false,
     id: ticketId2.toHexString(),
+    availableTickets: 5,
   });
   await ticket.save();
   ticket.version = 1;
@@ -79,14 +79,14 @@ it("cannot delete order if created by another user", async () => {
   const ticket = Ticket.build({
     title: "title1",
     price: 10,
-    isReserved: false,
     id: ticketId.toHexString(),
+    availableTickets: 5,
   });
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
-    isReserved: false,
     id: ticketId2.toHexString(),
+    availableTickets: 5,
   });
   await ticket.save();
   await ticket2.save();
@@ -116,8 +116,8 @@ it("publishes a cancel event", async () => {
   const ticket = Ticket.build({
     title: "title",
     price: 10,
-    isReserved: false,
     id: ticketId.toHexString(),
+    availableTickets: 5,
   });
   await ticket.save();
   const { body: order } = await request(app)

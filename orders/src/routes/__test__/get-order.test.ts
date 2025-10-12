@@ -34,13 +34,13 @@ it("return signed in user order by id", async () => {
     title: "title1",
     price: 10,
     id: ticketId.toString(),
-    isReserved: false,
+    availableTickets: 5,
   });
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
     id: ticketId2.toString(),
-    isReserved: false,
+    availableTickets: 5,
   });
   await ticket.save();
   await ticket2.save();
@@ -74,13 +74,13 @@ it("cannot return order created by another user", async () => {
     title: "title1",
     price: 10,
     id: ticketId.toString(),
-    isReserved: false,
+    availableTickets: 5,
   });
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
     id: ticketId2.toString(),
-    isReserved: false,
+    availableTickets: 5,
   });
   await ticket.save();
   await ticket2.save();

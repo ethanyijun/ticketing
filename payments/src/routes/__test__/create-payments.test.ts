@@ -1,4 +1,29 @@
+declare global {
+  var __testStripeAmount: number | undefined;
+}
 import request from "supertest";
+
+jest.mock("stripe", () => {
+  return jest.fn().mockImplementation(() => ({
+    charges: {
+      create: jest.fn().mockResolvedValue({ id: "test_charge_id" }),
+      list: jest.fn().mockImplementation(() => {
+        return Promise.resolve({
+          data: [
+            {
+              id: "test_charge_id",
+              amount: global.__testStripeAmount || 10000,
+              currency: "usd",
+            },
+          ],
+        });
+      }),
+    },
+    paymentIntents: {
+      create: jest.fn().mockResolvedValue({ id: "test_intent_id" }),
+    },
+  }));
+});
 import { app } from "../../app";
 import mongoose from "mongoose";
 import { Order } from "../../models/order";
@@ -34,7 +59,7 @@ it("error when user doesn't own the order", async () => {
       orderId: order.id,
       token: "sdfasdfa",
     })
-    .expect(401);
+    .expect(403);
 });
 
 it("returns 400 when purchasing a cancelled order", async () => {
@@ -60,6 +85,7 @@ it("returns 400 when purchasing a cancelled order", async () => {
 it("returns 200", async () => {
   const userId = new mongoose.Types.ObjectId().toHexString();
   const price = Math.floor(Math.random() * 100000);
+  global.__testStripeAmount = price * 100;
   const order = Order.build({
     id: new mongoose.Types.ObjectId().toHexString(),
     status: OrderStatus.Created,

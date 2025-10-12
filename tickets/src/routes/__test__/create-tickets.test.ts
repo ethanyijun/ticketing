@@ -32,6 +32,7 @@ it("error in invalid title", async () => {
     .send({
       title: "",
       price: 100,
+      availableTickets: 10,
     })
     .expect(400);
 
@@ -52,6 +53,7 @@ it("error in invalid price", async () => {
     .send({
       title: "test",
       price: -1,
+      availableTickets: 10,
     })
     .expect(400);
 
@@ -74,6 +76,7 @@ it("create a ticket with valid inputs", async () => {
     .send({
       title: "test",
       price: 99.95,
+      availableTickets: 10,
     })
     .expect(201);
   tickets = await Ticket.find({});
@@ -91,6 +94,7 @@ it("publishes an event", async () => {
     .send({
       title: "test",
       price: 99.95,
+      availableTickets: 10,
     })
     .expect(201);
   expect(kafkaConfigWrapper.kafka.produce).toHaveBeenCalled();

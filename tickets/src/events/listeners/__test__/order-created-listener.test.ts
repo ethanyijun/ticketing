@@ -10,6 +10,7 @@ const setup = async () => {
     title: "test",
     price: 12,
     userId: "123",
+    availableTickets: 5,
   });
   await ticket.save();
   console.log("test ticket: ", ticket);
@@ -20,6 +21,7 @@ const setup = async () => {
     ticket: {
       id: ticket.id,
       price: ticket.price,
+      quantity: 1,
     },
     expiresAt: "2012",
     status: OrderStatus.Created,

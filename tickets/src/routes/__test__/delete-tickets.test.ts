@@ -24,6 +24,7 @@ describe("Delete Tickets", () => {
       .send({
         title: "test",
         price: 20,
+        availableTickets: 10,
       });
 
     await request(app)

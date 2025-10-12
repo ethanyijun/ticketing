@@ -49,7 +49,10 @@ const ticketSchema = new mongoose.Schema(
       required: true,
     },
   },
+
   {
+    optimisticConcurrency: true, // for Mongoose v6+
+    versionKey: "version",
     toJSON: {
       transform(doc, ret) {
         ret.id = ret._id;
@@ -59,7 +62,7 @@ const ticketSchema = new mongoose.Schema(
     },
   }
 );
-ticketSchema.set("versionKey", "version");
+// ticketSchema.set("versionKey", "version");
 // ticketSchema.pre("save", function (done) {
 //   this.$where = {
 //     version: this.get("version") - 1,
@@ -69,7 +72,7 @@ ticketSchema.set("versionKey", "version");
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket(attrs);
 };
-ticketSchema.plugin(updateIfCurrentPlugin);
+// ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.statics.findByEvent = (event: { id: string; version: number }) => {
   return Ticket.findOne({
