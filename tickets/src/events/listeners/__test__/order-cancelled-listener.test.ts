@@ -11,8 +11,8 @@ const setup = async () => {
     title: "test",
     price: 12,
     userId: "123",
+    availableTickets: 2,
   });
-  ticket.orderId = orderId;
   await ticket.save();
   const data: OrderCancelledEvent["data"] = {
     id: orderId,
@@ -29,12 +29,13 @@ it("updates ticket, publishes an event, and acks the message", async () => {
   const { listener, data, ticket, orderId } = await setup();
   await listener.onMessage(data);
   const updatedTicket = await Ticket.findById(ticket.id);
-  expect(updatedTicket!.orderId).toEqual(undefined);
+  expect(updatedTicket!.availableTickets).toEqual(3);
   expect(kafkaConfigWrapper.kafka.produce).toHaveBeenCalled();
 
   expect(
-    (kafkaConfigWrapper.kafka.produce as jest.Mock).mock.calls[0][1].orderId
-  ).toEqual(undefined);
+    (kafkaConfigWrapper.kafka.produce as jest.Mock).mock.calls[0][1]
+      .availableTickets
+  ).toEqual(3);
 });
 
 // it("publish a ticket updated event", async () => {

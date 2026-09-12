@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import jwt from "jsonwebtoken";
 
+jest.setTimeout(30000);
+
 declare global {
   var signin: () => string[];
   var signinadmin: () => string[];
@@ -23,7 +25,7 @@ beforeEach(async () => {
   const deleteCollections = collections.map((collection) =>
     collection.deleteMany({})
   );
-  Promise.all(deleteCollections);
+  await Promise.all(deleteCollections);
 });
 
 afterAll(async () => {

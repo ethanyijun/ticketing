@@ -1,12 +1,43 @@
+# Dependencies
 node_modules
-# misc
-.DS_Store
+.pnpm-store
+
+# Build outputs
+dist
+build
+.next
+out
+
+# Environment variables
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
-.env
 
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Turborepo
+.turbo
+
+# Misc
+.DS_Store
+*.log
+coverage
+.nyc_output
+
+# IDE
+.vscode
+.idea
+.claude/
+*.swp
+*.swo
+*~
+
+# Local scratch files
+corrected_badge_solution.js

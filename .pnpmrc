@@ -1,0 +1,11 @@
+# Enable strict peer dependencies
+strict-peer-dependencies=false
+
+# Auto install peer dependencies
+auto-install-peers=true
+
+# Use shamefully-hoist for better compatibility (can be disabled if needed)
+shamefully-hoist=false
+
+# Store location
+store-dir=.pnpm-store

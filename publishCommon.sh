@@ -1,35 +1,12 @@
 #!/bin/bash
 
-# Change to the "common" directory and run "npm run pub"
+# Change to the "common" directory and run "pnpm run pub"
 cd common/
-npm run pub
+pnpm run pub
 
 # Go back to the parent directory
 cd ..
 
-# Change to the "tickets" directory and install the "@ethtickets/common" package
-cd tickets/
-npm install @ethtickets/common
-
-# Go back to the parent directory
-cd ..
-
-# Change to the "orders" directory and install the "@ethtickets/common" package
-cd orders/
-npm install @ethtickets/common
-
-cd ..
-
-# Change to the "orders" directory and install the "@ethtickets/common" package
-cd payments/
-npm install @ethtickets/common
-
-
-cd ..
-
-# Change to the "orders" directory and install the "@ethtickets/common" package
-cd expiration/
-npm install @ethtickets/common
-
-cd email-service/
-npm install @ethtickets/common
+# Install dependencies in all workspaces (pnpm will handle workspace protocol automatically)
+# This updates all services to use the newly published version
+pnpm install

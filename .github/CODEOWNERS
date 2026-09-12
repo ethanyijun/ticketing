@@ -1,0 +1,24 @@
+# Code ownership for microservices monorepo
+# Format: <path> <team or @username>
+
+# Services - each team owns their service
+/services/payments/ @payments-team
+/services/orders/ @orders-team
+/services/tickets/ @tickets-team
+/services/auth/ @auth-team
+/services/expiration/ @expiration-team
+/services/email-service/ @email-team
+
+# Shared packages - platform team owns
+/packages/common/ @platform-team
+/common/ @platform-team
+
+# Infrastructure - platform team owns
+/infra/ @platform-team
+/skaffold.yaml @platform-team
+/docker-compose*.yml @platform-team
+
+# Root configuration - platform team owns
+/package.json @platform-team
+/pnpm-workspace.yaml @platform-team
+/turbo.json @platform-team

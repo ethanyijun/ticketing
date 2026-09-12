@@ -42,18 +42,19 @@ it("error when ticket not exists", async () => {
     .set("Cookie", cookie)
     .send({
       ticketId,
+      quantity: 1,
     })
     .expect(404);
 });
 
-it("error when ticket reserved", async () => {
+it("rejects an order when the requested quantity is unavailable", async () => {
   const cookie = global.signin();
   const ticketId = new mongoose.Types.ObjectId();
   const ticket = Ticket.build({
     id: ticketId.toString(),
     title: "title",
     price: 10,
-    isReserved: true,
+    availableTickets: 0,
   });
   await ticket.save();
   await request(app)
@@ -61,6 +62,7 @@ it("error when ticket reserved", async () => {
     .set("Cookie", cookie)
     .send({
       ticketId: ticket.id,
+      quantity: 1,
     })
     .expect(400);
 });
@@ -72,18 +74,18 @@ it("successfully create new order", async () => {
     title: "title",
     price: 10,
     id: ticketId.toString(),
-    isReserved: false,
+    availableTickets: 10,
   });
   await ticket.save();
-  await request(app)
+  const response = await request(app)
     .post("/api/orders")
     .set("Cookie", cookie)
     .send({
       ticketId: ticket.id,
+      quantity: 1,
     })
     .expect(201);
-  const existingTicket = await Ticket.findById(ticket.id);
-  expect(existingTicket?.isReserved).toEqual(true);
+  expect(response.body.id).toBeDefined();
 });
 
 it("publishes an event", async () => {
@@ -93,7 +95,7 @@ it("publishes an event", async () => {
     title: "title",
     price: 10,
     id: ticketId.toString(),
-    isReserved: false,
+    availableTickets: 10,
   });
   await ticket.save();
   await request(app)
@@ -101,6 +103,7 @@ it("publishes an event", async () => {
     .set("Cookie", cookie)
     .send({
       ticketId: ticket.id,
+      quantity: 1,
     })
     .expect(201);
   expect(kafkaConfigWrapper.kafka.produce).toHaveBeenCalled();

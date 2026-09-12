@@ -19,7 +19,7 @@ router.delete(
     const order = await Order.findOne({
       _id: req.params.id,
       userId: req.currentUser!.id,
-    }).populate("ticket");
+    });
 
     if (!order) throw new NotFoundError();
     order.status = OrderStatus.Cancelled;

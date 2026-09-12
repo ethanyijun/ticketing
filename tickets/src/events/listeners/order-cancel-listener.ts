@@ -17,7 +17,6 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
     const findTicket = await Ticket.findById(ticketId);
     if (!findTicket) throw new NotFoundError();
     findTicket.set({
-      orderId: undefined,
       availableTickets: findTicket.availableTickets + 1,
     });
     await findTicket.save();
@@ -27,8 +26,7 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
       price: findTicket.price,
       userId: findTicket.userId,
       version: findTicket.version,
-      availableTickets: findTicket.availableTickets + 1,
-      // orderId: findTicket.orderId,
+      availableTickets: findTicket.availableTickets,
     });
   }
   readonly subject = Subjects.OrderCancelled;

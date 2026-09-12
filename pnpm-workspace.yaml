@@ -1,0 +1,9 @@
+packages:
+  - 'auth'
+  - 'client'
+  - 'common'
+  - 'email-service'
+  - 'expiration'
+  - 'orders'
+  - 'payments'
+  - 'tickets'

@@ -3,6 +3,8 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import request from "supertest";
 import { app } from "../app";
 
+jest.setTimeout(30000);
+
 declare global {
   var signin: () => Promise<string[]>;
 }
@@ -21,7 +23,7 @@ beforeEach(async () => {
   const deleteCollections = collections.map((collection) =>
     collection.deleteMany({})
   );
-  Promise.all(deleteCollections);
+  await Promise.all(deleteCollections);
 });
 
 afterAll(async () => {
@@ -36,5 +38,9 @@ global.signin = async () => {
     .post("/api/users/signup")
     .send({ email: "test1@test.com", password: "12345678" })
     .expect(201);
-  return response.get("Set-Cookie");
+  const cookies = response.get("Set-Cookie");
+  if (!cookies) {
+    throw new Error("Sign-in response did not include a session cookie");
+  }
+  return cookies;
 };

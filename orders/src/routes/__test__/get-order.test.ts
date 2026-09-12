@@ -34,13 +34,13 @@ it("return signed in user order by id", async () => {
     title: "title1",
     price: 10,
     id: ticketId.toString(),
-    isReserved: false,
+    availableTickets: 10,
   });
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
     id: ticketId2.toString(),
-    isReserved: false,
+    availableTickets: 10,
   });
   await ticket.save();
   await ticket2.save();
@@ -50,6 +50,7 @@ it("return signed in user order by id", async () => {
     .set("Cookie", cookie)
     .send({
       ticketId: ticket.id,
+      quantity: 1,
     })
     .expect(201);
   await request(app)
@@ -57,6 +58,7 @@ it("return signed in user order by id", async () => {
     .set("Cookie", cookie2)
     .send({
       ticketId: ticket2.id,
+      quantity: 1,
     })
     .expect(201);
   const response = await request(app)
@@ -74,13 +76,13 @@ it("cannot return order created by another user", async () => {
     title: "title1",
     price: 10,
     id: ticketId.toString(),
-    isReserved: false,
+    availableTickets: 10,
   });
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
     id: ticketId2.toString(),
-    isReserved: false,
+    availableTickets: 10,
   });
   await ticket.save();
   await ticket2.save();
@@ -90,6 +92,7 @@ it("cannot return order created by another user", async () => {
     .set("Cookie", cookie)
     .send({
       ticketId: ticket.id,
+      quantity: 1,
     })
     .expect(201);
   const { body: order2 } = await request(app)
@@ -97,6 +100,7 @@ it("cannot return order created by another user", async () => {
     .set("Cookie", cookie2)
     .send({
       ticketId: ticket2.id,
+      quantity: 1,
     })
     .expect(201);
   const response = await request(app)

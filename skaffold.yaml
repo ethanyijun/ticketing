@@ -3,61 +3,61 @@ kind: Config
 build:
   artifacts:
     - image: ethangai/auth
-      context: auth
+      context: .
       sync:
         manual:
           - src: src/**/*.ts
             dest: .
       docker:
-        dockerfile: Dockerfile
+        dockerfile: auth/Dockerfile
     - image: ethangai/client
-      context: client
+      context: .
       sync:
         manual:
           - src: '**/*.{tsx,js}'
             dest: .
       docker:
-        dockerfile: Dockerfile
+        dockerfile: client/Dockerfile
     - image: ethangai/tickets
-      context: tickets
+      context: .
       sync:
         manual:
           - src: src/**/*.ts
             dest: .
       docker:
-        dockerfile: Dockerfile
+        dockerfile: tickets/Dockerfile
     - image: ethangai/orders
-      context: orders
+      context: .
       sync:
         manual:
           - src: src/**/*.ts
             dest: .
       docker:
-        dockerfile: Dockerfile
+        dockerfile: orders/Dockerfile
     - image: ethangai/expiration
-      context: expiration
+      context: .
       sync:
         manual:
           - src: src/**/*.ts
             dest: .
       docker:
-        dockerfile: Dockerfile
+        dockerfile: expiration/Dockerfile
     - image: ethangai/payments
-      context: payments
+      context: .
       sync:
         manual:
           - src: src/**/*.ts
             dest: .
       docker:
-        dockerfile: Dockerfile
-    - image: ethangai/email
-      context: email-service
-      sync:
-        manual:
-          - src: src/**/*.ts
-            dest: .
-      docker:
-        dockerfile: Dockerfile
+        dockerfile: payments/Dockerfile
+    # - image: ethangai/email
+    #   context: email-service
+    #   sync:
+    #     manual:
+    #       - src: src/**/*.ts
+    #         dest: .
+    #   docker:
+    #     dockerfile: Dockerfile
   local:
     push: false
 manifests:

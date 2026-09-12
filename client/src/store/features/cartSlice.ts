@@ -19,15 +19,9 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
-      if (!state.items.find((x) => x.id === action.payload.id))
-        state.items.push(action.payload);
-      else {
-        state.items = state.items.map((item) =>
-          item.id === action.payload.id
-            ? { ...item, quantity: item.quantity + action.payload.quantity }
-            : item
-        );
-      }
+      // The orders API creates one order for one ticket, so the cart should
+      // represent a single ticket selection as well.
+      state.items = [action.payload];
     },
     removeFromCart: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);

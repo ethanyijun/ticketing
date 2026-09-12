@@ -36,13 +36,13 @@ it("successfully delete order by id if the order belongs to the user", async () 
   const ticket = Ticket.build({
     title: "title1",
     price: 10,
-    isReserved: false,
+    availableTickets: 10,
     id: ticketId.toHexString(),
   });
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
-    isReserved: false,
+    availableTickets: 10,
     id: ticketId2.toHexString(),
   });
   await ticket.save();
@@ -55,6 +55,7 @@ it("successfully delete order by id if the order belongs to the user", async () 
     .set("Cookie", cookie)
     .send({
       ticketId: ticket.id,
+      quantity: 1,
     })
     .expect(201);
   await request(app)
@@ -62,6 +63,7 @@ it("successfully delete order by id if the order belongs to the user", async () 
     .set("Cookie", cookie2)
     .send({
       ticketId: ticket2.id,
+      quantity: 1,
     })
     .expect(201);
   const response = await request(app)
@@ -79,13 +81,13 @@ it("cannot delete order if created by another user", async () => {
   const ticket = Ticket.build({
     title: "title1",
     price: 10,
-    isReserved: false,
+    availableTickets: 10,
     id: ticketId.toHexString(),
   });
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
-    isReserved: false,
+    availableTickets: 10,
     id: ticketId2.toHexString(),
   });
   await ticket.save();
@@ -96,6 +98,7 @@ it("cannot delete order if created by another user", async () => {
     .set("Cookie", cookie)
     .send({
       ticketId: ticket.id,
+      quantity: 1,
     })
     .expect(201);
   const { body: order2 } = await request(app)
@@ -103,6 +106,7 @@ it("cannot delete order if created by another user", async () => {
     .set("Cookie", cookie2)
     .send({
       ticketId: ticket2.id,
+      quantity: 1,
     })
     .expect(201);
   const response = await request(app)
@@ -116,7 +120,7 @@ it("publishes a cancel event", async () => {
   const ticket = Ticket.build({
     title: "title",
     price: 10,
-    isReserved: false,
+    availableTickets: 10,
     id: ticketId.toHexString(),
   });
   await ticket.save();
@@ -125,6 +129,7 @@ it("publishes a cancel event", async () => {
     .set("Cookie", cookie)
     .send({
       ticketId: ticket.id,
+      quantity: 1,
     })
     .expect(201);
   await request(app).delete(`/api/orders/${order.id}`).set("Cookie", cookie);

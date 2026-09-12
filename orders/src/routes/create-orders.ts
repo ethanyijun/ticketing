@@ -26,6 +26,9 @@ router.post(
       .isEmpty()
       .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
       .withMessage("Ticket Id must be provided"),
+    body("quantity")
+      .isInt({ min: 1 })
+      .withMessage("Quantity must be a positive integer"),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -36,8 +39,9 @@ router.post(
     if (!findTicket) {
       throw new NotFoundError();
     }
-    // if (findTicket.isReserved)
-    //   throw new BadRequestError("Ticket is already reserved");
+    if (quantity > findTicket.availableTickets) {
+      throw new BadRequestError("Not enough tickets available");
+    }
 
     let now = new Date();
     now.setMinutes(now.getMinutes() + 5); // timestamp
@@ -49,8 +53,6 @@ router.post(
       ticket: ticketId,
     });
     await order.save();
-    // findTicket.isReserved = true;
-    // await findTicket.save();
     // const client = axios.create({
     //   //www.ethangai.xyz
     //   baseURL:

@@ -10,7 +10,7 @@ const setup = async () => {
     id: new mongoose.Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
-    isReserved: false,
+    availableTickets: 10,
   });
   await ticket.save();
   const dataEvent: TicketUpdatedEvent = {
@@ -21,6 +21,7 @@ const setup = async () => {
       title: "test",
       price: 10,
       userId: new mongoose.Types.ObjectId().toHexString(),
+      availableTickets: 10,
     },
   };
   return { listener, dataEvent, ticket };

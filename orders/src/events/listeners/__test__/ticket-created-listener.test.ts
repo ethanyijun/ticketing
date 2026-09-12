@@ -14,6 +14,8 @@ const setup = async () => {
       title: "test",
       price: 10,
       userId: new mongoose.Types.ObjectId().toHexString(),
+      userEmail: "seller@example.com",
+      availableTickets: 10,
     },
   };
   return { listener, dataEvent };

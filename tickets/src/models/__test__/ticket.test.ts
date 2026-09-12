@@ -6,6 +6,7 @@ it("implements optimistic concurrency control", async () => {
     title: "concert",
     price: 5,
     userId: "123",
+    availableTickets: 10,
   });
 
   // Save the ticket to the database
@@ -37,6 +38,7 @@ it("increments the version number on multiple saves", async () => {
     title: "concert",
     price: 20,
     userId: "123",
+    availableTickets: 10,
   });
 
   await ticket.save();

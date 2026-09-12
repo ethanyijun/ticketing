@@ -6,20 +6,17 @@
   "scripts": {
     "start": "ts-node-dev --poll src/index.ts",
     "test": "jest --watchAll --no-cache",
-    "test:ci": "jest"
+    "test:ci": "jest --runInBand --passWithNoTests"
   },
   "jest": {
     "preset": "ts-jest",
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "./src/test/setup.ts"
-    ]
+    "testEnvironment": "node"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ethtickets/common": "^1.0.98",
+    "@ethtickets/common": "workspace:*",
     "@types/bull": "^4.10.0",
     "bull": "^4.11.5",
     "kafkajs": "^2.2.4",

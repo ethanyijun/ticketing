@@ -31,13 +31,13 @@ it("only return signed in user orders", async () => {
     title: "title1",
     price: 10,
     id: ticketId.toString(),
-    isReserved: false,
+    availableTickets: 10,
   });
   const ticket2 = Ticket.build({
     title: "title2",
     price: 10,
     id: ticketId2.toString(),
-    isReserved: false,
+    availableTickets: 10,
   });
   await ticket.save();
   await ticket2.save();
@@ -48,6 +48,7 @@ it("only return signed in user orders", async () => {
     .set("Cookie", cookie)
     .send({
       ticketId: ticket.id,
+      quantity: 1,
     })
     .expect(201);
   await request(app)
@@ -55,6 +56,7 @@ it("only return signed in user orders", async () => {
     .set("Cookie", cookie2)
     .send({
       ticketId: ticket2.id,
+      quantity: 1,
     })
     .expect(201);
   const response = await request(app).get("/api/orders").set("Cookie", cookie);

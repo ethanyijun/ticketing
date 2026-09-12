@@ -90,7 +90,7 @@ import mongoose from "mongoose";
 interface TicketAttrs {
   title: string;
   price: number;
-  isReserved: boolean;
+  availableTickets: number;
   id: string;
   // userId: string;
 }
@@ -102,8 +102,7 @@ interface TicketDoc extends mongoose.Document {
   price: number;
   // userId: string;
   version: number;
-  orderId: string;
-  isReserved: boolean;
+  availableTickets: number;
 }
 
 // An interface that describes the properties
@@ -130,14 +129,9 @@ const ticketSchema = new mongoose.Schema(
     //   type: String,
     //   required: true,
     // },
-    isReserved: {
-      type: Boolean,
+    availableTickets: {
+      type: Number,
       required: true,
-      default: false,
-    },
-    orderId: {
-      type: String,
-      required: false,
     },
   },
   {
@@ -163,7 +157,7 @@ ticketSchema.statics.build = (attrs: TicketAttrs) => {
     _id: attrs.id,
     title: attrs.title,
     price: attrs.price,
-    isReserved: attrs.isReserved,
+    availableTickets: attrs.availableTickets,
   });
 };
 ticketSchema.statics.findByEvent = (event: { id: string; version: number }) => {

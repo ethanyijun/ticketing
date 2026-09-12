@@ -1,20 +1,29 @@
 import { useState, useEffect } from "react";
 
-export const useCountdown = (expiresAt: string, status: string) => {
-  const [timeLeft, setTimeLeft] = useState(
-    Math.round((new Date(expiresAt).getTime() - new Date().getTime()) / 1000)
+const calculateTimeLeft = (expiresAt?: string) => {
+  if (!expiresAt) return 0;
+  return Math.max(
+    0,
+    Math.round((new Date(expiresAt).getTime() - Date.now()) / 1000)
+  );
+};
+
+export const useCountdown = (expiresAt?: string, status?: string) => {
+  const [timeLeft, setTimeLeft] = useState(() =>
+    calculateTimeLeft(expiresAt)
   );
 
   useEffect(() => {
-    if (timeLeft <= 0) return;
-    if (status === "complete") return;
+    setTimeLeft(calculateTimeLeft(expiresAt));
+
+    if (!expiresAt || status === "complete") return;
+
     const intervalId = setInterval(() => {
-      setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
+      setTimeLeft(calculateTimeLeft(expiresAt));
     }, 1000);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [timeLeft, status]);
+
+    return () => clearInterval(intervalId);
+  }, [expiresAt, status]);
 
   return timeLeft;
 };

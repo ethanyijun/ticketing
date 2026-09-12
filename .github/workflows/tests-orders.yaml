@@ -3,11 +3,19 @@ name: tests-orders
 on:
   pull_request:
     paths:
-      - 'orders/**'
+      - "orders/**"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: cd orders && npm install && npm run test:ci
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "pnpm"
+      - run: pnpm install
+      - run: pnpm --filter orders test:ci

@@ -1,20 +1,44 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
+import { headers, cookies } from "next/headers";
 
-export default ({ req }: { req?: any } = {}) => {
+/**
+ * Build an Axios client compatible with Next.js App Router.
+ * Automatically handles server vs browser environments.
+ */
+export default async function buildClient(): Promise<AxiosInstance> {
   if (typeof window === "undefined") {
-    console.log("We are on the server");
+    // 🧠 Server-side (RSC, route handler, etc.)
+
+    const headerList = await headers(); // immutable Headers
+    const cookieStore = await cookies(); // immutable cookies
+
+    // Convert headers() -> plain object
+    const forwardedHeaders: Record<string, string> = {};
+    headerList.forEach((value, key) => {
+      forwardedHeaders[key] = value;
+    });
+
+    // Convert cookies() -> Cookie header string
+    const cookieHeader = cookieStore
+      .getAll()
+      .map((c) => `${c.name}=${c.value}`)
+      .join("; ");
+
     return axios.create({
-      //www.ethangai.xyz
       baseURL:
         "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
-      headers: req ? { ...req.headers, Host: "ticketing.dev" } : undefined,
-      // baseURL: "http://ticketing.dev/",
-      // headers: { ...req.headers, Host: "ticketing.dev" },
-    });
-  } else {
-    console.log("We are on the browser");
-    return axios.create({
-      baseURL: "/",
+      headers: {
+        ...forwardedHeaders,
+        Host: "ticketing.dev", // 👈 important for ingress routing
+        Cookie: cookieHeader,
+      },
+      withCredentials: true,
     });
   }
-};
+
+  // 🧠 Client-side
+  return axios.create({
+    baseURL: "/", // Next.js proxy rewrites to /api
+    withCredentials: true,
+  });
+}

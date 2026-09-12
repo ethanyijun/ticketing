@@ -1,6 +1,5 @@
 import { app } from "./app";
 import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
-import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
 import { kafkaConfigWrapper } from "./kafka-config-wrapper";
 import { ExpirationCompletedListener } from "./events/listeners/expiration-completed-listener";
 import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
@@ -23,7 +22,6 @@ const start = async () => {
       process.env.KAFKA_BROKERS.split(",")
     );
     await new TicketCreatedListener(kafkaConfigWrapper.kafka).listen();
-    await new TicketUpdatedListener(kafkaConfigWrapper.kafka).listen();
     await new PaymentCreatedListener(kafkaConfigWrapper.kafka).listen();
     await new ExpirationCompletedListener(kafkaConfigWrapper.kafka).listen();
   } catch (error) {

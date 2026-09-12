@@ -1,0 +1,39 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "remoteCache": {
+    "enabled": true
+  },
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "build/**", ".next/**", "!.next/cache/**"],
+      "env": ["NODE_ENV"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "outputs": ["coverage/**"],
+      "cache": false
+    },
+    "test:ci": {
+      "dependsOn": ["build"],
+      "outputs": ["coverage/**"],
+      "env": ["CI", "NODE_ENV"]
+    },
+    "lint": {
+      "outputs": [],
+      "cache": true
+    },
+    "clean": {
+      "cache": false
+    },
+    "start": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

@@ -12,11 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "pnpm"
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - run: cd payments && docker build -t ethangai/payments .
+      - run: docker build -f payments/Dockerfile -t ethangai/payments .
       - run: docker push ethangai/payments
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v2

@@ -17,7 +17,7 @@ it("returns a 404 when purchasing an order that does not exist", async () => {
     .expect(404);
 });
 
-it("error when user doesn't own the order", async () => {
+it("returns 403 when the user does not own the order", async () => {
   const orderId = new mongoose.Types.ObjectId().toHexString();
   const order = Order.build({
     id: orderId,
@@ -34,7 +34,7 @@ it("error when user doesn't own the order", async () => {
       orderId: order.id,
       token: "sdfasdfa",
     })
-    .expect(401);
+    .expect(403);
 });
 
 it("returns 400 when purchasing a cancelled order", async () => {

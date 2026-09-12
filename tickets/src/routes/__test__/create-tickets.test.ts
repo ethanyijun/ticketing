@@ -74,6 +74,7 @@ it("create a ticket with valid inputs", async () => {
     .send({
       title: "test",
       price: 99.95,
+      availableTickets: 10,
     })
     .expect(201);
   tickets = await Ticket.find({});
@@ -91,6 +92,7 @@ it("publishes an event", async () => {
     .send({
       title: "test",
       price: 99.95,
+      availableTickets: 10,
     })
     .expect(201);
   expect(kafkaConfigWrapper.kafka.produce).toHaveBeenCalled();

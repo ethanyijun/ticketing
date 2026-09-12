@@ -1,0 +1,76 @@
+version: "3.8"
+
+# Contract testing mock servers
+# Uses Specmatic to create mock servers from OpenAPI contracts
+# Alternative: Use WireMock, MSW, or Pact
+
+services:
+  orders-mock:
+    image: specmatic/specmatic:latest
+    container_name: orders-mock
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./contracts/orders-service.yml:/app/contract.yml:ro
+    command: stub /app/contract.yml --port 3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  tickets-mock:
+    image: specmatic/specmatic:latest
+    container_name: tickets-mock
+    ports:
+      - "3002:3000"
+    volumes:
+      - ./contracts/tickets-service.yml:/app/contract.yml:ro
+    command: stub /app/contract.yml --port 3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  auth-mock:
+    image: specmatic/specmatic:latest
+    container_name: auth-mock
+    ports:
+      - "3003:3000"
+    volumes:
+      - ./contracts/auth-service.yml:/app/contract.yml:ro
+    command: stub /app/contract.yml --port 3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  expiration-mock:
+    image: specmatic/specmatic:latest
+    container_name: expiration-mock
+    ports:
+      - "3004:3000"
+    volumes:
+      - ./contracts/expiration-service.yml:/app/contract.yml:ro
+    command: stub /app/contract.yml --port 3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  email-mock:
+    image: specmatic/specmatic:latest
+    container_name: email-mock
+    ports:
+      - "3005:3000"
+    volumes:
+      - ./contracts/email-service.yml:/app/contract.yml:ro
+    command: stub /app/contract.yml --port 3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
